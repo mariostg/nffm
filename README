@@ -3,34 +3,47 @@ NFFM - Nothing Fancy File Manager
 ------------
 Introduction
 ------------
-I decided to write this little file manager because I wanted to learn some C and I thought a file manager would be a good learning tool.
+I decided to write this little file manager because I wanted to learn some C and 
+I thought a file manager would be a good learning tool.
 
-Capabilities are limited at the moment.  You can nagivate through your filesystem, open files, delete files, rename files, filter files by extension or filter for file that begins with in the current directory.  So nothing fancy...
+Capabilities are limited at the moment.  You can nagivate through your 
+filesystem, open files, delete files, rename files, filter files by extension 
+or filter for file that begins with in the current directory.  So nothing fancy...
 
 ---------------------
 Compile &Installation
 ---------------------
-I don't have a make file yet to compile.  gcc -g  nffm.c -lncurses -o nffm will do the trick for now.
-Configuration file extension.conf should be placed in $HOME/.config/nffm/extension.conf.
+I don't have a make file yet to compile.  gcc -g  nffm.c -lncurses -o nffm 
+will do the trick for now.
+Configuration file extension.conf should be placed in 
+$HOME/.config/nffm/extension.conf.
 
 -----------
 Description
 -----------
 NFFM (Not a Fancy File Manager) is a mouseless ncurses file manager written in C.
 
-The left pane lists the directories, the middle pane lists the files within the current directory and the right pane lists files marked for further action.
+The left pane lists the directories, the middle pane lists the files within 
+the current directory and the right pane lists files marked for further action.
 
-Navigation through the file manager is mainly done throught keys h, j, k, l and tab.  One can modify the config.h file and recompile the program to modify the key binding.  Eventually, there will be an rc file...
+Navigation through the file manager is mainly done throught keys h, j, k, l and tab.
+One can modify the config.h file and recompile the program to modify the key binding.
+Eventually, there will be an rc file...
 
 ----------
 Navigation
 ----------
-On the display, each file and directories are numbered.  On the current active pane (the pane in bold), typing n16 followed by Enter key will bring the cursor on the 16th entry.
+On the display, each file and directories are numbered.  On the current active 
+pane (the pane in bold), typing n16 followed by Enter key will bring the cursor 
+on the 16th entry.
 
-While the directory pane, arrow right drill down the directories and list on the middle panes the files.
+While the directory pane, arrow right drill down the directories and list on 
+the middle panes the files.
 The left arrow key navigates to the parrent directory.
 
+-----------
 Key Binding
+-----------
 Here are some of the implemented keys:
 
 .   (period) show hidden directgory and files
@@ -47,15 +60,18 @@ q   Quit
 f   Filter by file extension
 ^   Filter files by beginning of expression
 
-To delete multiple files, use the m key to mark the files, then D to delete the selected files.
+To delete multiple files, use the m key to mark the files, then D to delete 
+the selected files.
 
-Hidden files and directories are not showed by default.  Use . (period) to show the hidden files and directories.
+Hidden files and directories are not showed by default.  Use . (period) to 
+show the hidden files and directories.
 
 ----------------
 File Association
 ----------------
 
-NFFM uses its own file association file which shall be stored in $HOME/.config/nffm/.  It is not perfect but so far so good.
+NFFM uses its own file association file which shall be stored in 
+$HOME/.config/nffm/.  It is not perfect but so far so good.
 Here is what the extension.conf file looks like:
 
 c /usr/bin/urxvt -e vim
