@@ -1,0 +1,90 @@
+NFFM - Nothing Fancy File Manager
+
+------------
+Introduction
+------------
+I decided to write this little file manager because I wanted to learn some C and I thought a file manager would be a good learning tool.
+
+Capabilities are limited at the moment.  You can nagivate through your filesystem, open files, delete files, rename files, filter files by extension or filter for file that begins with in the current directory.  So nothing fancy...
+
+-------
+Compile
+-------
+I don't have a make file yet to compile.  gcc -g  nffm.c -lncurses -o nffm will do the trick for now.
+
+-----------
+Description
+-----------
+NFFM (Not a Fancy File Manager) is a mouseless ncurses file manager written in C.
+
+The left pane lists the directories, the middle pane lists the files within the current directory and the right pane lists files marked for further action.
+
+Navigation through the file manager is mainly done throught keys h, j, k, l and tab.  One can modify the config.h file and recompile the program to modify the key binding.  Eventually, there will be an rc file...
+
+----------
+Navigation
+----------
+On the display, each file and directories are numbered.  On the current active pane (the pane in bold), typing n16 followed by Enter key will bring the cursor on the 16th entry.
+
+While the directory pane, arrow right drill down the directories and list on the middle panes the files.
+The left arrow key navigates to the parrent directory.
+
+Key Binding
+Here are some of the implemented keys:
+
+.   (period) show hidden directgory and files
+h   Goto $HOME directory
+/   Goto / directory
+o   Open selected file
+d   Deleted selected file
+m   Mark selected file
+D   Delete marked file
+r   Rename selected file
+S-U Page up
+S-F Page down
+q   Quit
+f   Filter by file extension
+^   Filter files by beginning of expression
+
+To delete multiple files, use the m key to mark the files, then D to delete the selected files.
+
+Hidden files and directories are not showed by default.  Use . (period) to show the hidden files and directories.
+
+----------------
+File Association
+----------------
+
+NFFM uses its own file association file which shall be stored in $HOME/.config/nffm/.  It is not perfect but so far so good.
+Here is what the extension.conf file looks like:
+
+c /usr/bin/urxvt -e vim
+default /usr/bin/urxvt -e vim
+conf /usr/bin/urxvt -e vim
+cpp /usr/bin/urxvt -e vim
+gif /usr/bin/feh
+gz /usr/bin/xarchiver
+h /usr/bin/urxvt -e vim
+html /usr/bin/urxvt -e vim
+jpeg /usr/bin/feh
+jpg /usr/bin/feh
+json /usr/bin/urxvt -e vim
+pdf /usr/bin/zathura
+png /usr/bin/feh
+py /usr/bin/urxvt -e vim
+sh /usr/bin/urxvt -e vim
+txt /usr/bin/urxvt -e vim
+vim /usr/bin/urxvt -e vim
+xz /usr/bin/xarchiver
+zip /usr/bin/xarchiver
+gnumeric /usr/bin/gnumeric
+
+----
+ToDo
+----
+File copying
+File moving
+Implement an rc file
+Optional colored file listing
+Fix window resize
+Other ideas.
+
