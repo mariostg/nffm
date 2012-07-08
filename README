@@ -7,10 +7,11 @@ I decided to write this little file manager because I wanted to learn some C and
 
 Capabilities are limited at the moment.  You can nagivate through your filesystem, open files, delete files, rename files, filter files by extension or filter for file that begins with in the current directory.  So nothing fancy...
 
--------
-Compile
--------
+---------------------
+Compile &Installation
+---------------------
 I don't have a make file yet to compile.  gcc -g  nffm.c -lncurses -o nffm will do the trick for now.
+Configuration file extension.conf should be placed in $HOME/.config/nffm/extension.conf.
 
 -----------
 Description
