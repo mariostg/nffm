@@ -17,6 +17,9 @@
  *   along with NFFM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef NFFM_H
+#define NFFM_H
+
 #include <ncurses.h> //includes stdio.h and stdbool.h
 #include <sys/ioctl.h>
 #include <sys/types.h> //pid
@@ -139,3 +142,5 @@ int renameSelectedFile(const char *currentPath, const char *oldName);
 int ReadLine(char c, char aLine[]);
 char *printCursor(cursor c);
 bool begins_with(const char *string, const char *begins);
+
+#endif /* NFFM_H */

@@ -17,6 +17,9 @@
  *   along with NFFM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef CONFIG_H
+#define CONFIG_H
+
 //When reaching the bottom of a directory or file list, going down again bring
 //the cursor to the beginning of the list.  If at the top and moving up again
 //brings the cursor at the bottom of the list.
@@ -41,3 +44,4 @@
 #define FORMATTHOUSAND       true  //Display number with thousand separator
 #define CONFIRMDELETEMANY    true //Ask for confirmation of every file when deleting many files.
 
+#endif /* CONFIG_H */
