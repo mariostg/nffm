@@ -242,21 +242,9 @@ FILE * file_open(const char *filename, const char *mode)
 
 char * getFileExtension(const char *filename)
 {
-    int slen;  //filename Length
-    int elen=0;  //file extension lenght
     char *p;
-    char *extension = malloc(5);
-    slen=strlen(filename);
-    p=strdup(filename);
-    while(slen>0 && p[slen-1]!='.')
-    {
-        elen++;
-        extension=&p[slen-1];
-        slen--;
-    }
-    if(slen==0)
-        strcpy(extension,"default");
-    return extension;
+    p=rindex(filename, '.');
+    return (p==NULL) ? "default": ++p;
 }
 
 appCommand getCommand(const char *extension)
