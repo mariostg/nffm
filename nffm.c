@@ -396,8 +396,10 @@ int xdgFile(char *file)
     switch(p=fork())
     {
         case -1: //error
+            logger("\nError xdgFile");
             return -1;
         case 0:
+            logger("\nxdgFile child");
             close(1);
             close(2);
             if(strcmp(ac.arg,"\0")!=0)
@@ -405,11 +407,7 @@ int xdgFile(char *file)
             else
                 execl(ac.path, ac.path, file, (char *) NULL);
         default: //parent
-            logger("\noups");
-            if(waitpid(p, &status, 0)==1)
-                return -1;
-            else
-                return status;
+            logger("\nxdgFile parent");
     }
 }
 
