@@ -98,6 +98,7 @@ gnumeric /usr/bin/gnumeric
 ----
 ToDo
 ----
+Create new files & new folders
 File copying
 File moving
 Implement an rc file
