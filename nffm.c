@@ -328,7 +328,7 @@ options setFileFilter(options opt)
 {
     char c;
     char ext[10]={};
-    wbkgd(winfooter, COLOR_PAIR(4));
+    wbkgd(winfooter, COLOR_PAIR(GREEN_BLACK));
     mvwprintw(winfooter, 0, 0, "%s", "Enter file extension: ");
     wrefresh(winfooter);
     while((c=wgetch(winfooter))!='\n')
@@ -339,7 +339,7 @@ options setFileFilter(options opt)
         wrefresh(winfooter);
     }
     werase(winfooter);
-    wbkgd(winfooter, COLOR_PAIR(1));
+    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
     wrefresh(winfooter);
     strcpy(opt.file_ext, ext);
     return opt;
@@ -349,7 +349,7 @@ options setFileBeginOption(options opt)
 {
     char c;
     char begin[MAXBEGIN+1]={0};
-    wbkgd(winfooter, COLOR_PAIR(4));
+    wbkgd(winfooter, COLOR_PAIR(RED_BLACK));
     mvwprintw(winfooter, 0, 0, "%s", "Enter string file begins with: ");
     wrefresh(winfooter);
     while((c=wgetch(winfooter))!='\n')
@@ -360,7 +360,7 @@ options setFileBeginOption(options opt)
         wrefresh(winfooter);
     }
     werase(winfooter);
-    wbkgd(winfooter, COLOR_PAIR(1));
+    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
     wrefresh(winfooter);
     strcpy(opt.file_begin, begin);
     return opt;
@@ -377,12 +377,12 @@ char *GetUserDir(void)
 
 void message(char *msg)
 {
-    wbkgd(winfooter, COLOR_PAIR(4));
+    wbkgd(winfooter, COLOR_PAIR(RED_BLACK));
     mvwprintw(winfooter, 0, 0, "%s", msg);
     wrefresh(winfooter);
     wgetch(winmenu);
     werase(winfooter);
-    wbkgd(winfooter, COLOR_PAIR(1));
+    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
     wrefresh(winfooter);
 }
 int xdgFile(char *file)
@@ -509,7 +509,7 @@ int getNumber(WINDOW *w)
 
 void reverseColor(WINDOW *w, cursor c, char *item)
 {
-    wattron(w, COLOR_PAIR(2));
+    wattron(w, COLOR_PAIR(YELLOW_BLACK));
     wattron(w, A_REVERSE);
     mvwprintw(w, c.arrowcounter, 0, "%-3d>%-27s", c.menuitem, item);
     wrefresh(w);
@@ -550,10 +550,10 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
 	{
         if(strcmp(list[dir_index], item)==0)
             wattron(w, A_REVERSE);
-        wattron(w, COLOR_PAIR(2));
+        wattron(w, COLOR_PAIR(YELLOW_BLACK));
         mvwprintw(w, printline++, 0, "%-3d%-37s", dir_index, list[dir_index]);
         wattroff(w, A_REVERSE);
-        wattroff(w, COLOR_PAIR(2));
+        wattroff(w, COLOR_PAIR(YELLOW_BLACK));
         dir_index++;
 	}
     wrefresh(w);
@@ -692,7 +692,7 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
     char *oldPath;
     char *newPath;
     int i=0;
-    wbkgd(winfooter, COLOR_PAIR(4));
+    wbkgd(winfooter, COLOR_PAIR(GREEN_BLACK));
     mvwprintw(winfooter, 0, 0, "%s", "Enter new file name: ");
     wrefresh(winfooter);
     while((c=wgetch(winfooter))!='\n')
@@ -705,7 +705,7 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
         }
     }
     werase(winfooter);
-    wbkgd(winfooter, COLOR_PAIR(1));
+    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
     wrefresh(winfooter);
     oldPath=malloc(strlen(currentPath)+strlen(oldName)+1);
     newPath=malloc(strlen(currentPath)+strlen(newName)+1);
@@ -727,7 +727,7 @@ int deleteFile(const char *filepath, bool confirmDeleteMany)
     int deleteOk=-1;
     if(confirmDeleteMany)
     {
-        wbkgd(winfooter, COLOR_PAIR(4));
+        wbkgd(winfooter, COLOR_PAIR(RED_BLACK));
         mvwprintw(winfooter, 0, 0, "%s %s\?", "Do you really want to DELETE FILE ", filepath);
         wrefresh(winfooter);
         while((c=wgetch(winmenu))!='y' && c!='Y' && c!='n' && c!='N')
@@ -747,7 +747,7 @@ int deleteFile(const char *filepath, bool confirmDeleteMany)
         wrefresh(winfooter);
         sleep(0.5);
         werase(winfooter);
-        wbkgd(winfooter, COLOR_PAIR(1));
+        wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
         wrefresh(winfooter);
     }
     else
@@ -810,7 +810,7 @@ int main(void)
     activelist=dirlist;
     refreshDirInfo(dirs);
     strcpy(currentDir,ROOT);
-    wattron(winheader,COLOR_PAIR(3));
+    wattron(winheader,COLOR_PAIR(GREEN_BLACK));
     wattron(winmenu, A_BOLD);
     currentwin=winmenu;
     drawmenu(activelist, activelist[0], winmenu, cursor.linemarker);

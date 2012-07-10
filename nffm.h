@@ -55,6 +55,8 @@
 #define WINFILEW 45          //The width of file window
 #define WINTRANSITW 35       //The width of the temporary display area of selected files
 
+enum nffm_colors{MAGENTA_BLACK=1, YELLOW_BLACK=2, GREEN_BLACK=3, RED_BLACK=4};
+
 typedef struct{
 	int menuitem;         //index of directory or filelist
 	int diritemold;       //index to retain menuitem when tabbing
