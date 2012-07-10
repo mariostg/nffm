@@ -978,7 +978,7 @@ int main(void)
                 drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
                 break;
             case VIEW_FILES:
-                if(strcmp(dirlist[cursor.menuitem],"..")==0 || strcmp(dirlist[cursor.menuitem],".")==0)
+                if(dirlist[0]=='\0' || strcmp(dirlist[cursor.menuitem],"..")==0 || strcmp(dirlist[cursor.menuitem],".")==0)
                     break;
                 cursor.linemarker=0;
                 cursor.arrowcounter=0;
