@@ -38,6 +38,7 @@
 #define OPEN_FILE            'o'   //Open the selected file with preferred application
 #define GOTO_HOME_DIR        'H'   //Got to home user directory
 #define GOTO_ROOT_DIR        '/'   //Goto / directory
+#define CREATE_FILE          'c'   //Create an empty file in current directory
 #define RENAME_FILE          'r'   //rename the selected file
 #define SELECTBEGINWITH      '^'   //Select the files that begin with expression
 #define SELECTWITHEXTENSION  'f'   //Filer for files with given extension

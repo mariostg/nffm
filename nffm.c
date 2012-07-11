@@ -689,27 +689,9 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
 {
     char c;
     char *newName;
-    //char newName[80]={0};
     char *oldPath;
     char *newPath;
     int i=0;
-    /*
-    wbkgd(winfooter, COLOR_PAIR(GREEN_BLACK));
-    mvwprintw(winfooter, 0, 0, "%s", "Enter new file name: ");
-    wrefresh(winfooter);
-    while((c=wgetch(winfooter))!='\n')
-    {
-        if(ReadLine(c, newName))
-        {
-            werase(winfooter);
-            mvwprintw(winfooter, 0, 0, "%s %s", "Enter new file name: ", newName);
-            wrefresh(winfooter);
-        }
-    }
-    werase(winfooter);
-    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
-    wrefresh(winfooter);
-    */
     newName=getUserText("Enter file Name: ");
     oldPath=malloc(strlen(currentPath)+strlen(oldName)+1);
     newPath=malloc(strlen(currentPath)+strlen(newName)+1);
@@ -786,7 +768,7 @@ char *getUserText(const char *question)
     return user_text; 
 }
 
-/*
+
 int createFile(const char *filepath)
 {
     int fd;
@@ -801,7 +783,7 @@ int createFile(const char *filepath)
         message("File not created.");
     return 0;
 }
-*/
+
 int main(void)
 {
 	int key=0;
@@ -893,7 +875,7 @@ int main(void)
             case CREATE_FILE:
                 if (cursor.winmarker==AT_DIR)
                     break;
-                //createFile(join(currentDir, activelist[cursor.menuitem]));
+                createFile(join(currentDir, getUserText("File to create: ")));
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.file_count;
                 cursor=setCursor(DOWN, 0, cursor);

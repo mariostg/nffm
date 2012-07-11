@@ -7,7 +7,7 @@ I decided to write this little file manager because I wanted to learn some C and
 I thought a file manager would be a good learning tool.
 
 Capabilities are limited at the moment.  You can nagivate through your 
-filesystem, open files, delete files, rename files, filter files by extension 
+filesystem, open ,delete, rename, create files, filter files by extension 
 or filter for file that begins with in the current directory.  So nothing fancy...
 
 ---------------------
@@ -97,7 +97,7 @@ gnumeric /usr/bin/gnumeric
 ----
 ToDo
 ----
-Create new files & new folders
+Create new folders
 File copying
 File moving
 Implement an rc file
