@@ -35,6 +35,7 @@
 #include <errno.h>
 #include <time.h>  //for file info
 #include <stdbool.h>
+#include <fcntl.h>
 
 #define AT_DIR -1
 #define AT_FILE 1
@@ -110,6 +111,7 @@ WINDOW *winheader, *winfooter, *windirinfo, *winmenu,
 FILE * file_open(const char *filename, const char *mode);
 appCommand getCommand(const char *extension);
 bool UnmarkFile(struct filemarker **filelist, const char *filepath);
+bool begins_with(const char *string, const char *begins);
 bool ends_with(const char *string, const char *ends);
 bool findMarkedFile(struct filemarker *filelist, char *filepath);
 bool isHiddenFile(char s[]);
@@ -118,17 +120,22 @@ char *GetUserDir(void);
 char *delimLong(long nbr);
 char *delimStr(char nbr[]);
 char *dtg(time_t *tm);
+char *getUserText(const char *question);
 char *join(char s1[], char s2[]);
+char *printCursor(cursor c);
 char *printCursor(cursor c);
 cursor setCursor(int direction, int selection, cursor c);
 directories DoDirectoryList(char adir[], char *directory_list[], char *file_list[], options opt);
+int ReadLine(char c, char aLine[]);
 int addslash(char adir[]);
+int createFile(const char *filepath);
 int deleteFile(const char *filepath, bool confirmDeleteMany);
 int deleteMarkedFile(struct filemarker **filelist);
 int displayList(struct filemarker *filelist);
 int drawmenu(char *list[], char *item, WINDOW *w, int fromline);
 int filterfile(const struct dirent *d);
 int getNumber(WINDOW *w);
+int renameSelectedFile(const char *currentPath, const char *oldName);
 int split(char delim, char *stringtosplit);
 int xdgFile(char *file);
 options setFileFilter(options opt);
@@ -140,9 +147,5 @@ void normalColor(WINDOW *w, cursor c, char *item);
 void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
 void reverseColor(WINDOW *w, cursor c, char *item);
-int renameSelectedFile(const char *currentPath, const char *oldName);
-int ReadLine(char c, char aLine[]);
-char *printCursor(cursor c);
-bool begins_with(const char *string, const char *begins);
 
 #endif /* NFFM_H */

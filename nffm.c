@@ -688,10 +688,12 @@ char *printCursor(cursor c)
 int renameSelectedFile(const char *currentPath, const char *oldName)
 {
     char c;
-    char newName[80]={0};
+    char *newName;
+    //char newName[80]={0};
     char *oldPath;
     char *newPath;
     int i=0;
+    /*
     wbkgd(winfooter, COLOR_PAIR(GREEN_BLACK));
     mvwprintw(winfooter, 0, 0, "%s", "Enter new file name: ");
     wrefresh(winfooter);
@@ -707,6 +709,8 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
     werase(winfooter);
     wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
     wrefresh(winfooter);
+    */
+    newName=getUserText("Enter file Name: ");
     oldPath=malloc(strlen(currentPath)+strlen(oldName)+1);
     newPath=malloc(strlen(currentPath)+strlen(newName)+1);
     strcpy(oldPath,currentPath);
@@ -717,6 +721,7 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
     rename(oldPath,newPath);
     free(oldPath);
     free(newPath);
+    free(newName);
 }
 
 int deleteFile(const char *filepath, bool confirmDeleteMany)
@@ -757,6 +762,46 @@ int deleteFile(const char *filepath, bool confirmDeleteMany)
     return deleteOk;
 }
 
+char *getUserText(const char *question)
+{
+    char c;
+    int maxLength=50;
+    char *user_text=malloc(50);
+    user_text[0]='\0';
+    wbkgd(winfooter, COLOR_PAIR(GREEN_BLACK));
+    mvwprintw(winfooter, 0, 0, "%s", question);
+    wrefresh(winfooter);
+    while((c=wgetch(winfooter))!='\n')
+    {
+        if(ReadLine(c, user_text))
+        {
+            werase(winfooter);
+            mvwprintw(winfooter, 0, 0, "%s %s", question, user_text);
+            wrefresh(winfooter);
+        }
+    }
+    werase(winfooter);
+    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
+    wrefresh(winfooter);
+    return user_text; 
+}
+
+/*
+int createFile(const char *filepath)
+{
+    int fd;
+    fd=open(filepath, O_RDWR);
+    if(fd==-1)
+        fd=open(filepath, O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    else
+        message("File exists already.");
+    if (fd)
+        close(fd);
+    else
+        message("File not created.");
+    return 0;
+}
+*/
 int main(void)
 {
 	int key=0;
@@ -845,6 +890,15 @@ int main(void)
                 drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
                 refreshDirInfo(dirs);
                 break;
+            case CREATE_FILE:
+                if (cursor.winmarker==AT_DIR)
+                    break;
+                //createFile(join(currentDir, activelist[cursor.menuitem]));
+                dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
+                cursor.linecount=dirs.file_count;
+                cursor=setCursor(DOWN, 0, cursor);
+                drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
+                refreshDirInfo(dirs);
                 break;
             case RENAME_FILE: //Rename a file
                 if (cursor.winmarker==AT_DIR)
