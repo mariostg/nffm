@@ -223,9 +223,7 @@ char *join(const char dir[], const char file[])
 
 bool isHiddenFile(char s[])
 {
-    if(s[0]=='.')
-        return true;
-    return false;
+    return (s[0]=='.') ? true : false;
 }
 
 FILE * file_open(const char *filename, const char *mode)
@@ -867,7 +865,7 @@ int main(void)
                 drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
                 refreshDirInfo(dirs);
                 break;
-            case CREATE_FILE:
+            case CREATE_FILE://create a file or a folder
                 if (cursor.winmarker==AT_DIR)
                 {
                     createDir(currentDir, getUserText("Directory to create: "));
