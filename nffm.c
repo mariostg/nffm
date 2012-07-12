@@ -86,8 +86,6 @@ directories DoDirectoryList(char adir[], char *directory_list[], char *file_list
     dirs.dir_count=dir_index;
     dirs.file_count=file_index;
     strcpy(dirs.dirname, adir);
-    logger("\nDircount ");
-    logger(delimLong(dirs.dir_count));
     return dirs;
 }
 
@@ -372,10 +370,8 @@ int xdgFile(char *file)
     switch(p=fork())
     {
         case -1: //error
-            logger("\nError xdgFile");
             return -1;
         case 0:
-            logger("\nxdgFile child");
             close(1);
             close(2);
             if(strcmp(ac.arg,"\0")!=0)
@@ -383,7 +379,6 @@ int xdgFile(char *file)
             else
                 execl(ac.path, ac.path, file, (char *) NULL);
         default: //parent
-            logger("\nxdgFile parent");
     }
 }
 
@@ -458,11 +453,7 @@ bool findMarkedFile(struct filemarker *f, char *filepath)
     for(p=f; p!=NULL; p=p->next)
     {
         if(strcmp(p->fullpath,filepath)==0)
-        {
-            logger("File Match:");
-            logger(p->fullpath);
             return true;
-        }
     }
     return false;
 }
@@ -591,8 +582,6 @@ void refreshFileInfo(char currentDir[], char currentFile[])
 
 cursor setCursor(int direction, int selection, cursor c) 
 {
-    logger("\nCursor Before");
-    logger(printCursor(c));
     switch (direction)
     {
         case DOWN:
@@ -623,22 +612,18 @@ cursor setCursor(int direction, int selection, cursor c)
                 c.linemarker=c.linecount - c.linemax;
                 if(c.linemarker<0)
                     c.linemarker=0;
-                //logger("selection<0");
             }
             else if(selection<c.linemarker)
             {
                 c.linemarker-=c.linemax;
                 if(c.linemarker<0)
                     c.linemarker=0;
-                //logger("selection<c.linemarker");
             }
             break;
         case SAME:
             break;
     }
     c.menuitem=c.arrowcounter=selection;
-    logger("\nCursor After");
-    logger(printCursor(c));
     return c;
 }
 
@@ -684,8 +669,6 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
 
 int deleteFile(const char *filepath, bool confirmDeleteMany)
 {
-    //logger("\n\nEntering..");
-    //logger(__func__);
     char c;
     int deleteOk=-1;
     if(confirmDeleteMany)
@@ -967,10 +950,6 @@ int main(void)
                 if(cursor.winmarker==AT_DIR && dirs.dir_count==0)
                     break;
                 cursor=setCursor(DOWN, ++cursor.menuitem, cursor);
-                logger("\nCrsri ");
-                logger(delimLong(cursor.menuitem));
-                logger("\nActivelist_0 ");
-                logger(activelist[0]);
                 drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
                 if(cursor.winmarker==1) 
                 refreshFileInfo(currentDir, activelist[cursor.menuitem]);
@@ -1027,8 +1006,6 @@ int main(void)
                     split('/', currentDir);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.dir_count;
-                logger("\ncursor.linecount");
-                logger(delimLong(cursor.linecount));
                 drawmenu(dirlist, currentDir, winmenu, cursor.linemarker);
                 cursor.linemarker=0;
                 drawmenu(filelist, "---", winscrollable, cursor.linemarker);
@@ -1061,7 +1038,6 @@ int main(void)
             case GOTO_ROOT_DIR:
                 currentwin=winmenu;
                 strcpy(currentDir, ROOT);
-                logger(currentDir);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor=setCursor(UP, cursor.menuitem, cursor);
                 drawmenu(filelist, filelist[0], winscrollable, 0);
