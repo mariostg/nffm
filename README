@@ -8,10 +8,11 @@ I thought a file manager would be a good learning tool.
 
 Capabilities are limited at the moment.  You can nagivate through your 
 filesystem, open ,delete, rename, create files, filter files by extension 
-or filter for file that begins with in the current directory.  So nothing fancy...
+or filter for file that begins with in the current directory.  
+Folders can also be created and deleted.  So nothing fancy...
 
 ---------------------
-Compile &Installation
+Compile & Installation
 ---------------------
 Use the Makefile or gcc -g  nffm.c -lncurses -o nffm 
 Configuration file extension.conf should be placed in 

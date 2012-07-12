@@ -20,10 +20,15 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//When reaching the bottom of a directory or file list, going down again bring
-//the cursor to the beginning of the list.  If at the top and moving up again
-//brings the cursor at the bottom of the list.
-//
+/*
+ * When reaching the bottom of a directory or file list, going down again bring
+ * the cursor to the beginning of the list.  If at the top and moving up again
+ * brings the cursor at the bottom of the list.
+ *
+ * Directories cannot be deleted if it contain other directories or files.
+ *
+ */
+
 #define NEXT_DIR             'j'   /*Next dir or file down the list according to active pane*/
 #define PREVIOUS_DIR         'k'   /*Dir or file up the list according active pane*/ 
 #define VIEW_FILES           'l'   /*View files of current dir*/
@@ -31,14 +36,14 @@
 #define GOTO_DIR_NUMBER      'n'   //n followed by the dir or file number
 #define MOVE_PAGE_DOWN       'F'   //Got that...
 #define MOVE_PAGE_UP         'U'   //Got that...
-#define DELETE_FILE          'd'   //Delete the file currently selected
+#define DELETE_FILE          'd'   //Delete the file currently selected or the current directory.
 #define DELETE_MARKED_FILE   'D'   //Delete all the marked files.
-#define MARK_FILE            'm'   //Select multiple file for further acion
-#define HIDDEN_FILE          '.'   //Show or hide hidden files
+#define MARK_FILE            'm'   //Select multiple file for further acion.
+#define HIDDEN_FILE          '.'   //Show or hide hidden files and directories.
 #define OPEN_FILE            'o'   //Open the selected file with preferred application
-#define GOTO_HOME_DIR        'H'   //Got to home user directory
-#define GOTO_ROOT_DIR        '/'   //Goto / directory
-#define CREATE_FILE          'c'   //Create an empty file in current directory
+#define GOTO_HOME_DIR        'H'   //Got to home user directory.
+#define GOTO_ROOT_DIR        '/'   //Goto / directory.
+#define CREATE_FILE          'c'   //Create an empty file in current directory or create directory
 #define RENAME_FILE          'r'   //rename the selected file
 #define SELECTBEGINWITH      '^'   //Select the files that begin with expression
 #define SELECTWITHEXTENSION  'f'   //Filer for files with given extension

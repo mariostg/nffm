@@ -197,7 +197,7 @@ char *delimLong(long nbr)
     return longstr;
 }
 
-char *join(char dir[], char file[])
+char *join(const char dir[], const char file[])
 {
     int dir_length;
     int file_length;
@@ -746,11 +746,28 @@ char *getUserText(const char *question)
     return user_text; 
 }
 
+int createDir(const char *parentDir, const char *childDir)
+{
+    struct stat statbuf;
+    if(stat(parentDir, &statbuf)==-1)
+    {
+        message("parent directory does not exist.");
+        return 0;
+    }
+    if(stat(join(parentDir, childDir), &statbuf)==0 && S_ISDIR(statbuf.st_mode)==1)
+    {
+        message("Directory exist.");
+        return 0;
+    }
+    if(mkdir(join(parentDir,childDir), 0700)==-1)
+        message("Not created");
+    return 0;
+}
 
 int createFile(const char *filepath)
 {
     int fd;
-    fd=open(filepath, O_RDWR);
+    fd=open(filepath, O_RDWR);//TODO consider int access function
     if(fd==-1)
         fd=open(filepath, O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     else
@@ -852,10 +869,17 @@ int main(void)
                 break;
             case CREATE_FILE:
                 if (cursor.winmarker==AT_DIR)
-                    break;
-                createFile(join(currentDir, getUserText("File to create: ")));
-                dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
-                cursor.linecount=dirs.file_count;
+                {
+                    createDir(currentDir, getUserText("Directory to create: "));
+                    dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
+                    cursor.linecount=dirs.dir_count;
+                }
+                else
+                {
+                    createFile(join(currentDir, getUserText("File to create: ")));
+                    dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
+                    cursor.linecount=dirs.file_count;
+                }
                 cursor=setCursor(DOWN, 0, cursor);
                 drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
                 refreshDirInfo(dirs);
@@ -899,7 +923,10 @@ int main(void)
             case DELETE_FILE:
                 deleteFile(join(currentDir, activelist[cursor.menuitem]), true);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
-                cursor.linecount=dirs.file_count;
+                if (cursor.winmarker==AT_FILE)
+                    cursor.linecount=dirs.file_count;
+                else
+                    cursor.linecount=dirs.dir_count;
                 cursor=setCursor(UP, --cursor.menuitem, cursor);
                 drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
                 refreshDirInfo(dirs);
