@@ -327,21 +327,10 @@ int ReadLine(char c, char aLine[])
 options setFileFilter(options opt)
 {
     char c;
-    char ext[10]={};
-    wbkgd(winfooter, COLOR_PAIR(GREEN_BLACK));
-    mvwprintw(winfooter, 0, 0, "%s", "Enter file extension: ");
-    wrefresh(winfooter);
-    while((c=wgetch(winfooter))!='\n')
-    {
-        ReadLine(c, ext);
-        werase(winfooter);
-        mvwprintw(winfooter, 0, 0, "%s %s", "Enter file extension: ", ext);
-        wrefresh(winfooter);
-    }
-    werase(winfooter);
-    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
-    wrefresh(winfooter);
+    char *ext;
+    ext=getUserText("Enter file extension: ");
     strcpy(opt.file_ext, ext);
+    free(ext);
     return opt;
 }
 
