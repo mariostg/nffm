@@ -348,21 +348,10 @@ options setFileFilter(options opt)
 options setFileBeginOption(options opt)
 {
     char c;
-    char begin[MAXBEGIN+1]={0};
-    wbkgd(winfooter, COLOR_PAIR(RED_BLACK));
-    mvwprintw(winfooter, 0, 0, "%s", "Enter string file begins with: ");
-    wrefresh(winfooter);
-    while((c=wgetch(winfooter))!='\n')
-    {
-        ReadLine(c, begin);
-        werase(winfooter);
-        mvwprintw(winfooter, 0, 0, "%s %s", "Enter string file begins with: ", begin);
-        wrefresh(winfooter);
-    }
-    werase(winfooter);
-    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
-    wrefresh(winfooter);
+    char *begin;
+    begin=getUserText("Enter string file begins withwww: ");
     strcpy(opt.file_begin, begin);
+    free(begin);
     return opt;
     
 }
