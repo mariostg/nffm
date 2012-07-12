@@ -20,22 +20,21 @@
 #ifndef NFFM_H
 #define NFFM_H
 
+#include <dirent.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <malloc.h>
 #include <ncurses.h> //includes stdio.h and stdbool.h
+#include <pwd.h>      //for current user directory
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
 #include <sys/types.h> //pid
 #include <sys/wait.h> //waitpid
-#include <unistd.h>    //exec
-#include <pwd.h>      //for current user directory
-#include <unistd.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <dirent.h>
-#include <malloc.h>
-#include <errno.h>
 #include <time.h>  //for file info
-#include <stdbool.h>
-#include <fcntl.h>
+#include <unistd.h>    //exec
 
 #define AT_DIR -1
 #define AT_FILE 1
