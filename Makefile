@@ -8,7 +8,10 @@ OBJ = $(SRC:.c=.o)
 
 BIN = nffm
 
-.PHONY: default all clean
+PREFIX?=/usr
+BINDIR=${PREFIX}/bin
+
+.PHONY: default all clean install
 
 default: all
 all: $(BIN)
@@ -21,3 +24,7 @@ $(BIN): $(OBJ)
 
 clean:
 	rm -rf $(BIN) $(OBJ)
+
+install: all
+	test -d ${DESTDIR}${BINDIR}  || mkdir -p ${DESTDIR}${BINDIR}
+	install -m755 ${BIN}  ${DESTDIR}${BINDIR}/${BIN}

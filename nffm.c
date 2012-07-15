@@ -378,7 +378,7 @@ int xdgFile(char *file)
                 execl(ac.path, ac.path, ac.arg, ac.execarg, file, (char *) NULL);
             else
                 execl(ac.path, ac.path, file, (char *) NULL);
-        default: //parent
+        //default: //parent
     }
 }
 
