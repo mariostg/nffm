@@ -143,6 +143,7 @@ struct stat fileStat(char filepath[]);
 void logger(const char *logger);
 void markOneMoreFile(struct filemarker **filelist, char *filepath);
 void message(char *msg);
+void nffm_init_color(void);
 void normalColor(WINDOW *w, cursor c, char *item);
 void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);

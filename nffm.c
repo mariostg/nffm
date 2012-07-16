@@ -507,11 +507,11 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
 	{
         if(strcmp(list[dir_index], item)==0)
             wattron(w, A_REVERSE);
-        if(USECOLOR)
+        //if(USECOLOR)
             wattron(w, COLOR_PAIR(YELLOW_BLACK));
         mvwprintw(w, printline++, 0, "%-3d%-37s", dir_index, list[dir_index]);
         wattroff(w, A_REVERSE);
-        if(USECOLOR)
+        //if(USECOLOR)
             wattroff(w, COLOR_PAIR(YELLOW_BLACK));
         dir_index++;
 	}
@@ -752,6 +752,17 @@ int createFile(const char *filepath)
     return 0;
 }
 
+void nffm_init_color(void)
+{
+    start_color();
+    init_pair(1, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(3, COLOR_GREEN, COLOR_BLACK);
+    init_color(NFFM_ORANGE, 200,200,900);
+    init_pair(NFFM_ORANGE, NFFM_ORANGE, COLOR_BLACK);
+    init_pair(4, COLOR_YELLOW, COLOR_RED);  //For warning purposes
+
+}
 int main(void)
 {
 	int key=0;
@@ -785,13 +796,7 @@ int main(void)
     directories dirs;
 
 	initscr();
-    start_color();
-    init_pair(1, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(3, COLOR_GREEN, COLOR_BLACK);
-    init_color(NFFM_ORANGE, 200,200,900);
-
-    init_pair(NFFM_ORANGE, NFFM_ORANGE, COLOR_BLACK);
-    init_pair(4, COLOR_YELLOW, COLOR_RED);  //For warning purposes
+    nffm_init_color();
     getmaxyx(stdscr, maxheight, maxwidth);
  
     winmenu=newwin(MENUHT, MENUW, 1, 0);
