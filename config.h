@@ -49,5 +49,5 @@
 #define SELECTWITHEXTENSION  'f'   //Filer for files with given extension
 #define FORMATTHOUSAND       true  //Display number with thousand separator
 #define CONFIRMDELETEMANY    true //Ask for confirmation of every file when deleting many files.
-
+#define USECOLOR             true //Whether or not you want color.
 #endif /* CONFIG_H */
