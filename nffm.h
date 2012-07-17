@@ -104,6 +104,14 @@ typedef struct{
     char file_begin[MAXBEGIN+1];
 }options;
 
+typedef struct{
+    char extension[20];
+    unsigned int red;
+    unsigned int green;
+    unsigned int blue;
+    bool bold;
+}fileColors;
+
 WINDOW *winheader, *winfooter, *windirinfo, *winmenu, 
        *winscrollable, *currentwin, *winfileinfo, *wintransit;
 
@@ -134,12 +142,14 @@ int deleteMarkedFile(struct filemarker **filelist);
 int displayList(struct filemarker *filelist);
 int drawmenu(char *list[], char *item, WINDOW *w, int fromline);
 int filterfile(const struct dirent *d);
+int find_color(char *ext);
 int getNumber(WINDOW *w);
 int renameSelectedFile(const char *currentPath, const char *oldName);
 int split(char delim, char *stringtosplit);
 int xdgFile(char *file);
 options setFileFilter(options opt);
 struct stat fileStat(char filepath[]);
+void load_file_color(void);
 void logger(const char *logger);
 void markOneMoreFile(struct filemarker **filelist, char *filepath);
 void message(char *msg);

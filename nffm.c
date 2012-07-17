@@ -758,11 +758,41 @@ void nffm_init_color(void)
     init_pair(1, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_GREEN, COLOR_BLACK);
-    init_color(NFFM_ORANGE, 200,200,900);
-    init_pair(NFFM_ORANGE, NFFM_ORANGE, COLOR_BLACK);
     init_pair(4, COLOR_YELLOW, COLOR_RED);  //For warning purposes
-
 }
+
+void load_file_color(void)
+{
+    FILE *fp;
+    char line[STRLEN];
+    int i=0;
+    fp=file_open("colors", "r");
+    while(fgets(line, STRLEN, fp))
+    {
+        if(i>MAXEXTENSION)
+        {
+            perror("Too many file extension");
+            exit(1);
+        }
+        sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, &fc[i].bold);
+        i++;
+    }
+    strcpy(fc[i].extension,"\0");
+    fclose(fp);
+}
+
+int find_color(char *ext)
+{
+    int i=0;
+    while(fc[i].extension[0]!='\0')
+    {
+        if(strcmp(fc[i].extension, ext)==0)
+            return i;
+        i++;
+    }
+    return -1;
+}
+
 int main(void)
 {
 	int key=0;
@@ -796,7 +826,8 @@ int main(void)
     directories dirs;
 
 	initscr();
-    nffm_init_color();
+    if(USECOLOR)
+        nffm_init_color();
     getmaxyx(stdscr, maxheight, maxwidth);
  
     winmenu=newwin(MENUHT, MENUW, 1, 0);
