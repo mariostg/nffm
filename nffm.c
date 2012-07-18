@@ -787,27 +787,34 @@ void load_file_color(void)
     char ext[20];
 
     char config_path[80];
-    strcpy(config_path, GetUserDir());
-    addslash(config_path);
+    strcpy(config_path, SYSTEM_CONF);
     strcat(config_path, COLOR_FILE);
-
-    fp=file_open(config_path,"r");
-    while(fgets(line, STRLEN, fp))
+    fp=fopen(config_path,"r");
+    if (fp==NULL)
     {
-        if(i>MAXEXTENSION)
-        {
-            perror("Too many file extension");
-            exit(1);
-        }
-        sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, &fc[i].bold);
-        init_color(i, fc[i].red, fc[i].green, fc[i].blue); 
-        //sscanf(line, "%[^;];%d;%d;%d;%d",ext, &red, &green, &blue, &bold);
-        //init_color(i, red, green, blue); 
-        init_pair(i, i, COLOR_BLACK);
-        i++;
+        strcpy(config_path, GetUserDir());
+        addslash(config_path);
+        strcat(config_path, COLOR_FILE);
+        fp=file_open(config_path,"r");
     }
-    //strcpy(fc[i].extension,"\0");
-    fclose(fp);
+    if(fp)
+    {
+        while(fgets(line, STRLEN, fp))
+        {
+            if(i>MAXEXTENSION)
+            {
+                perror("Too many file extension");
+                exit(1);
+            }
+            sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, &fc[i].bold);
+            init_color(i, fc[i].red, fc[i].green, fc[i].blue); 
+            //sscanf(line, "%[^;];%d;%d;%d;%d",ext, &red, &green, &blue, &bold);
+            //init_color(i, red, green, blue); 
+            init_pair(i, i, COLOR_BLACK);
+            i++;
+        }
+        fclose(fp);
+    }
 }
 
 int find_color(char *ext)
