@@ -15,8 +15,12 @@ Folders can also be created and deleted.  So nothing fancy...
 Compile & Installation
 ---------------------
 Use the Makefile or gcc -g  nffm.c -lncurses -o nffm 
-Configuration file extension.conf should be placed in 
-$HOME/.config/nffm/extension.conf.
+Archlinux package in the AUR https://aur.archlinux.org/packages.php?ID=60782
+There are two configuration files:
+   extension.conf
+   color.conf
+The files should be placed in $HOME/.config/nffm/.
+If not, NFFM will attempt to use the files in /etc/nffm.
 
 -----------
 Description
@@ -95,13 +99,34 @@ xz /usr/bin/xarchiver
 zip /usr/bin/xarchiver
 gnumeric /usr/bin/gnumeric
 
+-----------------------------
+Color listing for files names
+-----------------------------
+
+Below is a small sample of the color listing configuration file (color.conf)
+The first line beginning with folder will set the color of the folder listing.
+The others set the color for the appropriate file extension.
+The semi-colon separated list read file extension, red level, green level, blue level, not defined yet.
+
+folder;1000;1000;1000;1
+c;0;500;500;1 
+git;600;200;0;0
+gnumeric;500;200;500;1
+gz;500;100;900;1
+html:0;500;1000;1
+jpg;500;0;500;1
+js;1000;1000;0;1 
+json:100;400;800;0
+kdb;0;200;200;0
+pdf;800;100;500;0
+
 ----
 ToDo
 ----
+
 File copying
 File moving
 Implement an rc file
-Optional colored file listing
 Fix window resize
 Other ideas.
 
