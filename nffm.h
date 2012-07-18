@@ -39,6 +39,7 @@
 #define AT_DIR -1
 #define AT_FILE 1
 #define CONF_FILE ".config/nffm/extension.conf"
+#define COLOR_FILE ".config/nffm/color.conf"
 #define FILEMAX 30          //The number of files listed
 #define MAXBEGIN 20         //Max number of characters allowed to set file begin with option.
 #define MAXDIGIT 3           //not more than 999

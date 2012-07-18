@@ -517,7 +517,9 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
         }
         else
         {
-            colorindex=YELLOW_BLACK;
+            //colorindex=YELLOW_BLACK;
+            colorindex=10;
+            logger(fc[11].extension);
         }
         wattron(w, COLOR_PAIR(colorindex));
         mvwprintw(w, printline++, 0, "%-3d%-37s", dir_index, list[dir_index]);
@@ -777,8 +779,19 @@ void load_file_color(void)
 {
     FILE *fp;
     char line[STRLEN];
-    int i=1;
-    fp=file_open("colors", "r");
+    int i=10;
+    int red=0;
+    int green=0;
+    int blue=0;
+    int bold=0;
+    char ext[20];
+
+    char config_path[80];
+    strcpy(config_path, GetUserDir());
+    addslash(config_path);
+    strcat(config_path, COLOR_FILE);
+
+    fp=file_open(config_path,"r");
     while(fgets(line, STRLEN, fp))
     {
         if(i>MAXEXTENSION)
@@ -788,6 +801,8 @@ void load_file_color(void)
         }
         sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, &fc[i].bold);
         init_color(i, fc[i].red, fc[i].green, fc[i].blue); 
+        //sscanf(line, "%[^;];%d;%d;%d;%d",ext, &red, &green, &blue, &bold);
+        //init_color(i, red, green, blue); 
         init_pair(i, i, COLOR_BLACK);
         i++;
     }
@@ -797,7 +812,7 @@ void load_file_color(void)
 
 int find_color(char *ext)
 {
-    int i=1;
+    int i=10;
     while(fc[i].extension[0]!='\0')
     {
         if(strcmp(fc[i].extension, ext)==0)
