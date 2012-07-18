@@ -245,35 +245,45 @@ char * getFileExtension(const char *filename)
 
 appCommand getCommand(const char *extension)
 {
-    FILE *f;
+    FILE *fp;
     const int linelength=80;
     char line[80];
-    char config_path[80];
     appCommand ac;
     ac.extension[0]='\0';
+    char scan_extension[10];
+    char config_path[80];
+
     strcpy(config_path, GetUserDir());
     addslash(config_path);
+    strcat(config_path, USER_CONF);
     strcat(config_path, CONF_FILE);
+    fp=fopen(config_path,"r");
 
-    f=file_open(config_path,"r");
-    char scan_extension[10];
-    
-    while(fgets(line, linelength,f))
+    if (fp==NULL)//No local config file available.
     {
-        sscanf(line,"%s",scan_extension);
-        if(strcmp(scan_extension,extension)==0) //extension found
+        strcpy(config_path, SYSTEM_CONF);
+        strcat(config_path, CONF_FILE);
+        fp=fopen(config_path,"r");
+    }
+    if(fp)//Hopefully there is a system conf file
+    {
+        while(fgets(line, linelength,fp))
         {
-            if(sscanf(line,"%s%s%s%s", ac.extension, ac.path, ac.arg, ac.execarg)==4)
-                return ac;
-            else if(sscanf(line, "%s%s", ac.extension, ac.path)==2)
+            sscanf(line,"%s",scan_extension);
+            if(strcmp(scan_extension,extension)==0) //extension found
             {
-                strcpy(ac.arg,"\0");
-                strcpy(ac.execarg,"\0");
-                return ac;
+                if(sscanf(line,"%s%s%s%s", ac.extension, ac.path, ac.arg, ac.execarg)==4)
+                    return ac;
+                else if(sscanf(line, "%s%s", ac.extension, ac.path)==2)
+                {
+                    strcpy(ac.arg,"\0");
+                    strcpy(ac.execarg,"\0");
+                    return ac;
+                }
             }
         }
+        fclose(fp);
     }
-    fclose(f);
     return ac;
 }
 
@@ -787,17 +797,19 @@ void load_file_color(void)
     char ext[20];
 
     char config_path[80];
-    strcpy(config_path, SYSTEM_CONF);
+    strcpy(config_path, GetUserDir());
+    addslash(config_path);
+    strcat(config_path, USER_CONF);
     strcat(config_path, COLOR_FILE);
     fp=fopen(config_path,"r");
-    if (fp==NULL)
+
+    if (fp==NULL)//No locale  configuration file available...
     {
-        strcpy(config_path, GetUserDir());
-        addslash(config_path);
+        strcpy(config_path, SYSTEM_CONF);
         strcat(config_path, COLOR_FILE);
-        fp=file_open(config_path,"r");
+        fp=fopen(config_path,"r");
     }
-    if(fp)
+    if(fp)//Hopefully there is system wide conf file.
     {
         while(fgets(line, STRLEN, fp))
         {
