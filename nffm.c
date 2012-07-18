@@ -498,6 +498,7 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
     int printline=0;
     int dir_index=fromline;
     int h;
+    int colorindex=0;
     werase(w);
     if (w==winscrollable)
         h=FILEMAX;
@@ -508,11 +509,21 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
         if(strcmp(list[dir_index], item)==0)
             wattron(w, A_REVERSE);
         //if(USECOLOR)
-            wattron(w, COLOR_PAIR(YELLOW_BLACK));
+        if (w==winscrollable)
+        {
+            colorindex=find_color(getFileExtension(list[dir_index]));
+            if (colorindex==-1)
+                colorindex=1;
+        }
+        else
+        {
+            colorindex=YELLOW_BLACK;
+        }
+        wattron(w, COLOR_PAIR(colorindex));
         mvwprintw(w, printline++, 0, "%-3d%-37s", dir_index, list[dir_index]);
         wattroff(w, A_REVERSE);
         //if(USECOLOR)
-            wattroff(w, COLOR_PAIR(YELLOW_BLACK));
+        wattroff(w, COLOR_PAIR(colorindex));
         dir_index++;
 	}
     wrefresh(w);
@@ -759,13 +770,14 @@ void nffm_init_color(void)
     init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_GREEN, COLOR_BLACK);
     init_pair(4, COLOR_YELLOW, COLOR_RED);  //For warning purposes
+    load_file_color();
 }
 
 void load_file_color(void)
 {
     FILE *fp;
     char line[STRLEN];
-    int i=0;
+    int i=1;
     fp=file_open("colors", "r");
     while(fgets(line, STRLEN, fp))
     {
@@ -775,15 +787,17 @@ void load_file_color(void)
             exit(1);
         }
         sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, &fc[i].bold);
+        init_color(i, fc[i].red, fc[i].green, fc[i].blue); 
+        init_pair(i, i, COLOR_BLACK);
         i++;
     }
-    strcpy(fc[i].extension,"\0");
+    //strcpy(fc[i].extension,"\0");
     fclose(fp);
 }
 
 int find_color(char *ext)
 {
-    int i=0;
+    int i=1;
     while(fc[i].extension[0]!='\0')
     {
         if(strcmp(fc[i].extension, ext)==0)

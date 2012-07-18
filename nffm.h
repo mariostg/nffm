@@ -44,6 +44,7 @@
 #define MAXDIGIT 3           //not more than 999
 #define MAXDIRECTORY 80      //Max Length of directory name
 #define MAXDIRLIST 3000
+#define MAXEXTENSION 250
 #define MAXFILELIST 3000
 #define MAXMENUSIZE 3000     //Max number of menu items
 #define MENUHT 30           //The height of menu + header
@@ -104,13 +105,13 @@ typedef struct{
     char file_begin[MAXBEGIN+1];
 }options;
 
-typedef struct{
+struct fileColor{
     char extension[20];
     unsigned int red;
     unsigned int green;
     unsigned int blue;
     bool bold;
-}fileColors;
+}fc[MAXEXTENSION];
 
 WINDOW *winheader, *winfooter, *windirinfo, *winmenu, 
        *winscrollable, *currentwin, *winfileinfo, *wintransit;
