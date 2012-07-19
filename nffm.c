@@ -863,7 +863,7 @@ int main(void)
     char *filelist[MAXFILELIST];   //The files of the current directory
     char **activelist;      //dirlist or dirfilt
     char msg[100];              //To display messages on status bar
-    //struct winsize ws;
+    struct winsize ws;
     directories dirs;
 
 	initscr();
@@ -893,7 +893,7 @@ int main(void)
 
 	do
 	{
-        /*
+        
         if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) ==-1)
         {
             perror("ioctl");
@@ -901,11 +901,11 @@ int main(void)
         else
         {
             resizeterm(ws.ws_row, ws.ws_col);
-            winscrollable=newwin(maxheight, ws.ws_col-MENUW,0,MENUW);
-            wresize(winscrollable,maxheight, ws.ws_col-MENUW);
-            drawmenu(filelist, filelist[cursor.menuitem], winscrollable, cursor.linemarkerfile);
+            wintransit=newwin(maxheight,WINTRANSITW,1,MENUW+1+WINFILEW+1);
+            wresize(wintransit,maxheight, ws.ws_col-MENUW+1+WINFILEW+1);
+            displayList(filemarker);
         } 
-        */
+        
         key=wgetch(winmenu);
         switch(key)
         {
