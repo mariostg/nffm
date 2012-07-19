@@ -867,7 +867,7 @@ int main(void)
     directories dirs;
 
 	initscr();
-    if(USECOLOR)
+    if(USECOLOR && has_colors && can_change_color())
         nffm_init_color();
     getmaxyx(stdscr, maxheight, maxwidth);
  
