@@ -332,7 +332,6 @@ int ReadLine(char c, char aLine[])
 }
 options setFileFilter(options opt)
 {
-    char c;
     char *ext;
     ext=getUserText("Enter file extension: ");
     strcpy(opt.file_ext, ext);
@@ -342,7 +341,6 @@ options setFileFilter(options opt)
 
 options setFileBeginOption(options opt)
 {
-    char c;
     char *begin;
     begin=getUserText("Enter string file begins withwww: ");
     strcpy(opt.file_begin, begin);
@@ -372,7 +370,6 @@ void message(char *msg)
 int xdgFile(char *file)
 {
     pid_t p;
-    int status;
     appCommand ac;
     ac=getCommand(getFileExtension(file));
     if(strcmp(ac.extension,"\0")==0)
@@ -390,6 +387,7 @@ int xdgFile(char *file)
                 execl(ac.path, ac.path, file, (char *) NULL);
         //default: //parent
     }
+    return 0;
 }
 
 void markOneMoreFile(struct filemarker **filelist, char *filepath)
@@ -663,11 +661,9 @@ char *printCursor(cursor c)
 }
 int renameSelectedFile(const char *currentPath, const char *oldName)
 {
-    char c;
     char *newName;
     char *oldPath;
     char *newPath;
-    int i=0;
     newName=getUserText("Enter file Name: ");
     oldPath=malloc(strlen(currentPath)+strlen(oldName)+1);
     newPath=malloc(strlen(currentPath)+strlen(newName)+1);
@@ -680,6 +676,7 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
     free(oldPath);
     free(newPath);
     free(newName);
+    return 0;
 }
 
 int deleteFile(const char *filepath, bool confirmDeleteMany)
@@ -721,7 +718,6 @@ int deleteFile(const char *filepath, bool confirmDeleteMany)
 char *getUserText(const char *question)
 {
     char c;
-    int maxLength=50;
     char *user_text=malloc(50);
     user_text[0]='\0';
     wbkgd(winfooter, COLOR_PAIR(GREEN_BLACK));
@@ -867,7 +863,7 @@ int main(void)
     directories dirs;
 
 	initscr();
-    if(USECOLOR && has_colors && can_change_color())
+    if(USECOLOR && has_colors() && can_change_color())
         nffm_init_color();
     getmaxyx(stdscr, maxheight, maxwidth);
  
