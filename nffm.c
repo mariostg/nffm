@@ -527,7 +527,6 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
         {
             //colorindex=YELLOW_BLACK;
             colorindex=10;
-            logger(fc[11].extension);
         }
         wattron(w, COLOR_PAIR(colorindex));
         mvwprintw(w, printline++, 0, "%-3d%-37s", dir_index, list[dir_index]);
