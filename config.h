@@ -50,4 +50,5 @@
 #define FORMATTHOUSAND       true  //Display number with thousand separator
 #define CONFIRMDELETEMANY    true //Ask for confirmation of every file when deleting many files.
 #define USECOLOR             true //Whether or not you want color.
+#define ARCHIVEANDCOMPRESS   'z'  //tar plus gzip selected files.
 #endif /* CONFIG_H */

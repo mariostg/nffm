@@ -7,9 +7,10 @@ I decided to write this little file manager because I wanted to learn some C and
 I thought a file manager would be a good learning tool.
 
 Capabilities are limited at the moment.  You can nagivate through your 
-filesystem, open ,delete, rename, create files, filter files by extension 
+filesystem, open, delete, rename, create files, filter files by extension 
 or filter for file that begins with in the current directory.  
-Folders can also be created and deleted.  So nothing fancy...
+Folders can also be created and deleted.  It is also possible to archive+gzip
+selected files.  So nothing fancy...
 
 ---------------------
 Compile & Installation
@@ -48,7 +49,7 @@ The left arrow key navigates to the parrent directory.
 -----------
 Key Binding
 -----------
-Here are some of the implemented keys:
+Here are some of the implemented keys.  More in config.h file
 
 .   (period) show hidden directgory and files
 h   Goto $HOME directory

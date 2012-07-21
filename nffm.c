@@ -808,8 +808,8 @@ void load_file_color(void)
                 perror("Too many file extension");
                 exit(1);
             }
-            sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, &fc[i].bold);
-            init_color(i, fc[i].red, fc[i].green, fc[i].blue); 
+            sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, (int*)&fc[i].bold);
+            init_color(i, fc[i].red, fc[i].green, (_Bool)fc[i].blue); 
             init_pair(i, i, COLOR_BLACK);
             i++;
         }
@@ -827,6 +827,34 @@ int find_color(char *ext)
         i++;
     }
     return -1;
+}
+int AddToZip(const char *zippathname, const char *fullpath, const char *mode)
+{
+    int status;
+    pid_t pid;
+    switch(pid=fork())
+    {
+        case -1: //error
+            return -1;
+        case 0:
+            close(1);
+            close(2);
+            execl("/bin/tar", "bin/tar", mode, zippathname, fullpath, (char *) NULL);
+        default: //parent
+            waitpid(pid, &status, 0);
+    }
+    return 0;
+}
+
+int zipMarkedFiles(char *zippathname, struct filemarker **f)
+{
+    struct filemarker *p;
+    p=*f;
+    AddToZip(zippathname,p->fullpath,"cf");
+    p=p->next;
+        for(;p!=NULL;p=p->next)
+            AddToZip(zippathname,p->fullpath,"rf");
+    return 0;
 }
 
 int main(void)
@@ -904,6 +932,19 @@ int main(void)
         key=wgetch(winmenu);
         switch(key)
         {
+            case ARCHIVEANDCOMPRESS:
+                if (cursor.winmarker==AT_DIR)
+                {
+                    message("Must be in file pane for this action");
+                    break;
+                }
+                ZipMarkedFiles(join(currentDir, getUserText("New Compressed archive name: ")),&filemarker);
+                dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
+                cursor.linecount=dirs.file_count;
+                cursor=setCursor(UP, 0, cursor);
+                drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
+                displayList(filemarker);
+                break;
             case SELECTBEGINWITH:
                 if (cursor.winmarker==AT_DIR)
                     break;
@@ -933,7 +974,10 @@ int main(void)
                 break;
             case RENAME_FILE: //Rename a file
                 if (cursor.winmarker==AT_DIR)
+                {
+                    message("This is not meant to rename folder");
                     break;
+                }
                 renameSelectedFile(currentDir, activelist[cursor.menuitem]);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.file_count;
