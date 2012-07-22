@@ -121,6 +121,12 @@ json:100;400;800;0
 kdb;0;200;200;0
 pdf;800;100;500;0
 
+-------------------------------
+Archiving and compressing files
+-------------------------------
+Must have tar and gzip installed.  Default command is 'm' to mark the files follow by 'z'.  In the
+message bar, enter the name of the archive.  Exemple give MyArchiveName will create MyArchiveName.tar.gz.
+
 ----
 ToDo
 ----
