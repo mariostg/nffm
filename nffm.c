@@ -828,10 +828,16 @@ int find_color(char *ext)
     }
     return -1;
 }
-int AddToZip(const char *zippathname, const char *fullpath, const char *mode)
+int AddToZip(char *zippathname, const char *fullpath, const char *mode)
 {
     int status;
     pid_t pid;
+    const char *tgz=".tar.gz"; 
+    char *p_found;
+    p_found = strstr(zippathname, tgz);
+    if(p_found==NULL || (strcmp(p_found, tgz)!=0))
+        strncat(zippathname, tgz,8);
+
     switch(pid=fork())
     {
         case -1: //error
@@ -938,7 +944,7 @@ int main(void)
                     message("Must be in file pane for this action");
                     break;
                 }
-                ZipMarkedFiles(join(currentDir, getUserText("New Compressed archive name: ")),&filemarker);
+                zipMarkedFiles(join(currentDir, getUserText("New Compressed archive name: ")),&filemarker);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.file_count;
                 cursor=setCursor(UP, 0, cursor);

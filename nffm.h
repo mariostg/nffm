@@ -137,6 +137,7 @@ char *printCursor(cursor c);
 char *printCursor(cursor c);
 cursor setCursor(int direction, int selection, cursor c);
 directories DoDirectoryList(char adir[], char *directory_list[], char *file_list[], options opt);
+int AddToZip(char *zippathname, const char *fullpath, const char *mode);
 int ReadLine(char c, char aLine[]);
 int addslash(char adir[]);
 int createDir(const char *parentDir, const char *childDir);
