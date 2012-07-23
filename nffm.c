@@ -427,9 +427,6 @@ int deleteMarkedFile(struct filemarker **f)
 
 bool UnmarkFile(struct filemarker **filelist, const char *filepath)
 {
-    logger("\n\nEntering...");
-    logger(__func__);
-    logger(filepath); 
     struct filemarker *current, *previous;
     current=*filelist;
     previous=NULL;
@@ -450,8 +447,6 @@ bool UnmarkFile(struct filemarker **filelist, const char *filepath)
     else
         previous->next=current->next;
     free(current);
-    logger("\nExiting...");
-    logger(__func__);
     return true;
 }
 
