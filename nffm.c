@@ -524,7 +524,7 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
             colorindex=10;
         }
         wattron(w, COLOR_PAIR(colorindex));
-        mvwprintw(w, printline++, 0, "%-3d%-37s", dir_index, list[dir_index]);
+        mvwprintw(w, printline++, 0, "%-3d%-42s", dir_index, list[dir_index]);
         wattroff(w, A_REVERSE);
         //if(USECOLOR)
         wattroff(w, COLOR_PAIR(colorindex));
@@ -566,7 +566,7 @@ void refreshFileInfo(char currentDir[], char currentFile[])
     filepath = join(currentDir, currentFile);
     fileinfo = fileStat(filepath);
     fmt_size=delimLong((long)fileinfo.st_size);
-    mvwprintw(winfileinfo,0,0,"%-45s",currentFile);
+    mvwprintw(winfileinfo,0,0,"%-*s", MENUW, currentFile);
     mvwprintw(winfileinfo,1,0,"%18s Bytes",fmt_size);
     t=dtg(&fileinfo.st_atime);
     mvwprintw(winfileinfo,2,0,"Access: %16s",t);
