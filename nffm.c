@@ -566,7 +566,7 @@ void refreshFileInfo(char currentDir[], char currentFile[])
     filepath = join(currentDir, currentFile);
     fileinfo = fileStat(filepath);
     fmt_size=delimLong((long)fileinfo.st_size);
-    mvwprintw(winfileinfo,0,0,"%24s",currentFile);
+    mvwprintw(winfileinfo,0,0,"%-45s",currentFile);
     mvwprintw(winfileinfo,1,0,"%18s Bytes",fmt_size);
     t=dtg(&fileinfo.st_atime);
     mvwprintw(winfileinfo,2,0,"Access: %16s",t);
