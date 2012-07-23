@@ -851,6 +851,11 @@ int zipMarkedFiles(char *zippathname, struct filemarker **f)
 {
     struct filemarker *p;
     p=*f;
+    if(p==NULL)
+    {
+        message("Sorry, nothing to do");
+        return -1;
+    }
     AddToZip(zippathname,p->fullpath,"cf");
     p=p->next;
         for(;p!=NULL;p=p->next)
