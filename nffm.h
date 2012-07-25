@@ -23,6 +23,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <libtar.h>
 #include <malloc.h>
 #include <ncurses.h> //includes stdio.h and stdbool.h
 #include <pwd.h>      //for current user directory
@@ -35,6 +36,7 @@
 #include <sys/wait.h> //waitpid
 #include <time.h>  //for file info
 #include <unistd.h>    //exec
+#include <zlib.h>
 
 #define AT_DIR -1
 #define AT_FILE 1
@@ -52,7 +54,7 @@
 #define MAXMENUSIZE 3000     //Max number of menu items
 #define MENUHT 30           //The height of menu + header
 #define MENUMAX 30           //The number of directories listed
-#define MENUW 45             //The width of menu
+#define MENUW 45             //The width of the directory and file listing.
 #define ROOT "/"
 #define SHOW_HIDDEN 0
 #define STRLEN 1024
@@ -137,7 +139,6 @@ char *printCursor(cursor c);
 char *printCursor(cursor c);
 cursor setCursor(int direction, int selection, cursor c);
 directories DoDirectoryList(char adir[], char *directory_list[], char *file_list[], options opt);
-int AddToZip(char *zippathname, const char *fullpath, const char *mode);
 int ReadLine(char c, char aLine[]);
 int addslash(char adir[]);
 int createDir(const char *parentDir, const char *childDir);
@@ -163,5 +164,7 @@ void nffm_init_color(void);
 void normalColor(WINDOW *w, cursor c, char *item);
 void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
+int gzCompress(char *infile, char *outfile);
+int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[]);
 
 #endif /* NFFM_H */

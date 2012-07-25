@@ -823,43 +823,67 @@ int find_color(char *ext)
     }
     return -1;
 }
-int AddToZip(char *zippathname, const char *fullpath, const char *mode)
-{
-    int status;
-    pid_t pid;
-    const char *tgz=".tar.gz"; 
-    char *p_found;
-    p_found = strstr(zippathname, tgz);
-    if(p_found==NULL || (strcmp(p_found, tgz)!=0))
-        strncat(zippathname, tgz,8);
 
-    switch(pid=fork())
-    {
-        case -1: //error
-            return -1;
-        case 0:
-            close(1);
-            close(2);
-            execl("/bin/tar", "bin/tar", mode, zippathname, fullpath, (char *) NULL);
-        default: //parent
-            waitpid(pid, &status, 0);
-    }
+int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[])
+{
+    TAR *pTar;
+    tar_open(&pTar, tarFileName, NULL, O_WRONLY | O_APPEND| O_CREAT , 0644, TAR_GNU);
+    tar_append_file(pTar, tarPathname, tarSaveName);
+    close(tar_fd(pTar));
     return 0;
 }
 
-int zipMarkedFiles(char *zippathname, struct filemarker **f)
+int gzCompress(char *infile, char *outfile)
+{
+    FILE *in = fopen(infile, "rb");
+    gzFile gzOutFile = gzopen(outfile, "wb");
+    if(!infile || !outfile)
+        return -1;
+    char buf[128];
+    int len;
+    int err;
+
+    for (;;) {
+        len = (int)fread(buf, 1, sizeof(buf), in);
+        if (ferror(in)) {
+            perror("fread");
+            exit(1);
+        }
+        if (len == 0) break;
+
+        if (gzwrite(gzOutFile, buf, len) != len) error(gzerror(gzOutFile, &err));
+    }
+    fclose(in);
+    if (gzclose(gzOutFile) != Z_OK) error("failed gzclose");
+    return 0;
+}
+
+int zipMarkedFiles(char *tarpathname, struct filemarker **f)
 {
     struct filemarker *p;
     p=*f;
+    char *pfn;
+    char *gzpathname;
+    int arrsize=0;
     if(p==NULL)
     {
         message("Sorry, nothing to do");
         return -1;
     }
-    AddToZip(zippathname,p->fullpath,"cf");
-    p=p->next;
-        for(;p!=NULL;p=p->next)
-            AddToZip(zippathname,p->fullpath,"rf");
+    for(p=*f; p!=NULL; p=p->next)
+    {
+        arrsize=strlen(p->fullpath)+1;
+        char fn[arrsize];
+        strncpy(fn, p->fullpath, arrsize);
+        pfn=rindex(fn, '/');
+        pfn++;
+        tarOneFile(tarpathname,p->fullpath, pfn );
+    }
+    gzpathname=malloc(strlen(tarpathname)+4);
+    strncpy(gzpathname, tarpathname, strlen(tarpathname)+1);
+    strncat(gzpathname,".gz",4);
+    gzCompress(tarpathname,gzpathname);
+    free(gzpathname);
     return 0;
 }
 
@@ -892,6 +916,7 @@ int main(void)
     char *filelist[MAXFILELIST];   //The files of the current directory
     char **activelist;      //dirlist or dirfilt
     char msg[100];              //To display messages on status bar
+    char *pjoin;
     struct winsize ws;
     directories dirs;
 
