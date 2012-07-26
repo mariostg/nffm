@@ -983,6 +983,8 @@ int main(void)
                     break;
                 }
                 zipMarkedFiles(currentDir, getUserText("New Compressed archive name: "),&filemarker);
+                free(filemarker);
+                filemarker=NULL;
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.file_count;
                 cursor=setCursor(UP, 0, cursor);
