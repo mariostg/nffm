@@ -153,7 +153,7 @@ int getNumber(WINDOW *w);
 int renameSelectedFile(const char *currentPath, const char *oldName);
 int split(char delim, char *stringtosplit);
 int xdgFile(char *file);
-int zipMarkedFiles(char *zipathname, struct filemarker **f);
+int zipMarkedFiles(char *destDir, char *zipathname, struct filemarker **f);
 options setFileFilter(options opt);
 struct stat fileStat(char filepath[]);
 void load_file_color(void);

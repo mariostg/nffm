@@ -342,7 +342,7 @@ options setFileFilter(options opt)
 options setFileBeginOption(options opt)
 {
     char *begin;
-    begin=getUserText("Enter string file begins withwww: ");
+    begin=getUserText("Enter string file begins with: ");
     strcpy(opt.file_begin, begin);
     free(begin);
     return opt;
@@ -827,6 +827,8 @@ int find_color(char *ext)
 int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[])
 {
     TAR *pTar;
+    if(!ends_with(tarFileName,"tar"))
+        strncat(tarFileName, ".tar", 5);
     tar_open(&pTar, tarFileName, NULL, O_WRONLY | O_APPEND| O_CREAT , 0644, TAR_GNU);
     tar_append_file(pTar, tarPathname, tarSaveName);
     close(tar_fd(pTar));
@@ -850,21 +852,28 @@ int gzCompress(char *infile, char *outfile)
             exit(1);
         }
         if (len == 0) break;
-
-        if (gzwrite(gzOutFile, buf, len) != len) error(gzerror(gzOutFile, &err));
+        if (gzwrite(gzOutFile, buf, len) != len) 
+            message("Something wrong when writing gz file");
     }
     fclose(in);
-    if (gzclose(gzOutFile) != Z_OK) error("failed gzclose");
+    if (gzclose(gzOutFile) != Z_OK) 
+        message("Could not close the gzipped file");
     return 0;
 }
 
-int zipMarkedFiles(char *tarpathname, struct filemarker **f)
+int zipMarkedFiles(char *destDir, char *tarname, struct filemarker **f)
 {
     struct filemarker *p;
     p=*f;
     char *pfn;
     char *gzpathname;
+    char *tarpathname;
     int arrsize=0;
+    strncat(tarname, ".tar", 5);
+    tarpathname=malloc(strlen(tarname)+6);
+    strncpy(tarpathname, "/tmp", 5);
+    addslash(tarpathname);
+    strncat(tarpathname, tarname, strlen(tarname)+1);
     if(p==NULL)
     {
         message("Sorry, nothing to do");
@@ -877,13 +886,17 @@ int zipMarkedFiles(char *tarpathname, struct filemarker **f)
         strncpy(fn, p->fullpath, arrsize);
         pfn=rindex(fn, '/');
         pfn++;
-        tarOneFile(tarpathname,p->fullpath, pfn );
+        tarOneFile(tarpathname,p->fullpath, pfn);
     }
     gzpathname=malloc(strlen(tarpathname)+4);
-    strncpy(gzpathname, tarpathname, strlen(tarpathname)+1);
+    strncpy(gzpathname, destDir, strlen(destDir)+1);
+    addslash(gzpathname);
+    strncat(gzpathname,tarname, strlen(tarname)+1);
     strncat(gzpathname,".gz",4);
     gzCompress(tarpathname,gzpathname);
+    remove(tarpathname);
     free(gzpathname);
+    free(tarpathname);
     return 0;
 }
 
@@ -969,7 +982,7 @@ int main(void)
                     message("Must be in file pane for this action");
                     break;
                 }
-                zipMarkedFiles(join(currentDir, getUserText("New Compressed archive name: ")),&filemarker);
+                zipMarkedFiles(currentDir, getUserText("New Compressed archive name: "),&filemarker);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.file_count;
                 cursor=setCursor(UP, 0, cursor);
