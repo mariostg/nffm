@@ -1,6 +1,6 @@
 CC      = gcc
 CFLAGS  = -g
-LDFLAGS = -lncurses
+LDFLAGS = -lncurses -lz -ltar
 
 SRC = nffm.c
 HDR = nffm.h config.h
@@ -20,7 +20,7 @@ all: $(BIN)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN): $(OBJ)
-	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 clean:
 	rm -rf $(BIN) $(OBJ)
