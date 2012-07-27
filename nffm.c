@@ -900,6 +900,19 @@ int zipMarkedFiles(char *destDir, char *tarname, struct filemarker **f)
     return 0;
 }
 
+int findItemIndex(const char *item, char **itemList)
+{
+    int i=0;
+    char *thisitem;
+    while(*itemList)
+    {
+        if(strcmp(item, *itemList++)==0)
+            return i;
+        i++;
+    }
+    return -1;
+}
+
 int main(void)
 {
 	int key=0;
@@ -930,6 +943,7 @@ int main(void)
     char **activelist;      //dirlist or dirfilt
     char msg[100];              //To display messages on status bar
     char *pjoin;
+    char *userInput;
     struct winsize ws;
     directories dirs;
 
@@ -982,13 +996,17 @@ int main(void)
                     message("Must be in file pane for this action");
                     break;
                 }
-                zipMarkedFiles(currentDir, getUserText("New Compressed archive name: "),&filemarker);
-                free(filemarker);
-                filemarker=NULL;
+                userInput=getUserText("New Compressed archive name: ");
+                zipMarkedFiles(currentDir, userInput, &filemarker);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.file_count;
-                cursor=setCursor(UP, 0, cursor);
-                drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
+                //TODO work atcursor  location
+                userInput=strncat(userInput, ".gz", 4);
+                cursor.linemarker=findItemIndex(userInput, activelist);
+                cursor=setCursor(UP, cursor.linemarker, cursor);
+                drawmenu(activelist, userInput, currentwin, cursor.linemarker);
+                free(filemarker);
+                filemarker=NULL;
                 displayList(filemarker);
                 break;
             case SELECTBEGINWITH:

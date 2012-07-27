@@ -166,5 +166,6 @@ void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
 int gzCompress(char *infile, char *outfile);
 int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[]);
+int findItemIndex(const char *item, char **itemList);
 
 #endif /* NFFM_H */
