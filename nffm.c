@@ -49,6 +49,7 @@ directories DoDirectoryList(char adir[], char *directory_list[], char *file_list
             if(lstat(str, &statbuf)!=0)
             {
                 perror("In DoDirectories File not found");
+                perror(str);
                 exit(1);
             }
             if(S_ISDIR(statbuf.st_mode)==1)
@@ -888,7 +889,7 @@ int zipMarkedFiles(char *destDir, char *tarname, struct filemarker **f)
         pfn++;
         tarOneFile(tarpathname,p->fullpath, pfn);
     }
-    gzpathname=malloc(strlen(tarpathname)+4);
+    gzpathname=malloc(strlen(destDir) + strlen(tarname)+4);
     strncpy(gzpathname, destDir, strlen(destDir)+1);
     addslash(gzpathname);
     strncat(gzpathname,tarname, strlen(tarname)+1);
@@ -1000,7 +1001,6 @@ int main(void)
                 zipMarkedFiles(currentDir, userInput, &filemarker);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.file_count;
-                //TODO work atcursor  location
                 userInput=strncat(userInput, ".gz", 4);
                 cursor.linemarker=findItemIndex(userInput, activelist);
                 cursor=setCursor(UP, cursor.linemarker, cursor);
