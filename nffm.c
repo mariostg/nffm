@@ -804,7 +804,7 @@ void load_file_color(void)
                 perror("Too many file extension");
                 exit(1);
             }
-            //color_content(i, &fc0[i].red, &fc0[i].green, fc0[i].blue);
+            color_content(i, &fc0[i].red, &fc0[i].green, &fc0[i].blue);//Store current color for reset on endwin();
             sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, (int*)&fc[i].bold);
             init_color(i, fc[i].red, fc[i].green, fc[i].blue); 
             init_pair(i, i, COLOR_BLACK);
@@ -824,6 +824,16 @@ int find_color(char *ext)
         i++;
     }
     return -1;
+}
+
+void nffm_reset_color(void)
+{
+    int i=10;
+    while(fc[i].extension[0]!='\0')
+    {
+        init_color(i, fc0[i].red, fc0[i].green, fc0[i].blue); 
+        i++;
+    }
 }
 
 int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[])
@@ -1228,6 +1238,7 @@ int main(void)
 	echo();	
     start_color();
 	endwin();
+    nffm_reset_color();
 	return 0;
 }
 

@@ -112,9 +112,9 @@ typedef struct{
 
 struct fileColor{
     char extension[20];
-    unsigned int red;
-    unsigned int green;
-    unsigned int blue;
+    unsigned short red;
+    unsigned short green;
+    unsigned short blue;
     bool bold;
 }fc[MAXEXTENSION], fc0[MAXEXTENSION];
 
@@ -148,10 +148,13 @@ int deleteMarkedFile(struct filemarker **filelist);
 int displayList(struct filemarker *filelist);
 int drawmenu(char *list[], char *item, WINDOW *w, int fromline);
 int filterfile(const struct dirent *d);
+int findItemIndex(const char *item, char **itemList);
 int find_color(char *ext);
 int getNumber(WINDOW *w);
+int gzCompress(char *infile, char *outfile);
 int renameSelectedFile(const char *currentPath, const char *oldName);
 int split(char delim, char *stringtosplit);
+int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[]);
 int xdgFile(char *file);
 int zipMarkedFiles(char *destDir, char *zipathname, struct filemarker **f);
 options setFileFilter(options opt);
@@ -161,11 +164,9 @@ void logger(const char *logger);
 void markOneMoreFile(struct filemarker **filelist, char *filepath);
 void message(char *msg);
 void nffm_init_color(void);
+void nffm_reset_color(void);
 void normalColor(WINDOW *w, cursor c, char *item);
 void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
-int gzCompress(char *infile, char *outfile);
-int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[]);
-int findItemIndex(const char *item, char **itemList);
 
 #endif /* NFFM_H */
