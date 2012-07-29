@@ -116,7 +116,7 @@ struct fileColor{
     unsigned int green;
     unsigned int blue;
     bool bold;
-}fc[MAXEXTENSION];
+}fc[MAXEXTENSION], fc0[MAXEXTENSION];
 
 WINDOW *winheader, *winfooter, *windirinfo, *winmenu, 
        *winscrollable, *currentwin, *winfileinfo, *wintransit;
