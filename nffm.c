@@ -1009,6 +1009,8 @@ int main(void)
                     break;
                 }
                 userInput=getUserText("New Compressed archive name: ");
+                if (filemarker==NULL)//if no file marked, mark the current, then zip it
+                    markOneMoreFile(&filemarker, join(currentDir,activelist[cursor.menuitem]));
                 zipMarkedFiles(currentDir, userInput, &filemarker);
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
                 cursor.linecount=dirs.file_count;
@@ -1019,6 +1021,7 @@ int main(void)
                 free(filemarker);
                 filemarker=NULL;
                 displayList(filemarker);
+                refreshFileInfo(currentDir, activelist[cursor.menuitem]);
                 break;
             case SELECTBEGINWITH:
                 if (cursor.winmarker==AT_DIR)
