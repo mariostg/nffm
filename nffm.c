@@ -987,18 +987,6 @@ int main(void)
 	do
 	{
         
-        if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) ==-1)
-        {
-            perror("ioctl");
-        }
-        else
-        {
-            resizeterm(ws.ws_row, ws.ws_col);
-            wintransit=newwin(maxheight,WINTRANSITW,1,MENUW+1+WINFILEW+1);
-            wresize(wintransit,maxheight, ws.ws_col-MENUW+1+WINFILEW+1);
-            displayList(filemarker);
-        } 
-        
         key=wgetch(winmenu);
         switch(key)
         {
@@ -1232,6 +1220,18 @@ int main(void)
                 drawmenu(dirlist, dirlist[0], winmenu, 0);
                 refreshDirInfo(dirs);
                 break;
+            default:
+                if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) ==-1)
+                    perror("ioctl");
+                else if(ws.ws_row!=maxheight || ws.ws_col!=maxwidth)
+                {
+                    maxheight=ws.ws_row;
+                    maxwidth=ws.ws_col;
+                    resizeterm(ws.ws_row, ws.ws_col);
+                    wintransit=newwin(maxheight,WINTRANSITW,1,MENUW+1+WINFILEW+1);
+                    wresize(wintransit,maxheight, ws.ws_col-MENUW+1+WINFILEW+1);
+                    displayList(filemarker);
+                } 
 
         }
         werase(winheader);
