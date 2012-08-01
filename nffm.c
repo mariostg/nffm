@@ -887,7 +887,6 @@ int gzCompress(char *infile, char *outfile)
         return -1;
     char buf[128];
     int len;
-    int err;
 
     for (;;) {
         len = (int)fread(buf, 1, sizeof(buf), in);
@@ -947,7 +946,6 @@ int zipMarkedFiles(char *destDir, char *tarname, struct filemarker **f)
 int findItemIndex(const char *item, char **itemList)
 {
     int i=0;
-    char *thisitem;
     while(*itemList)
     {
         if(strcmp(item, *itemList++)==0)
@@ -986,7 +984,6 @@ int main(void)
     char *filelist[MAXFILELIST];   //The files of the current directory
     char **activelist;      //dirlist or dirfilt
     char msg[100];              //To display messages on status bar
-    char *pjoin;
     char *userInput;
     struct winsize ws;
     directories dirs;

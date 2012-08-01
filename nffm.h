@@ -112,9 +112,9 @@ typedef struct{
 
 struct fileColor{
     char extension[20];
-    unsigned short red;
-    unsigned short green;
-    unsigned short blue;
+    short red;
+    short green;
+    short blue;
     bool bold;
 }fc[MAXEXTENSION], fc0[MAXEXTENSION];
 
