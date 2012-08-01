@@ -1255,9 +1255,14 @@ int main(void)
                 currentwin=winmenu;
                 strcpy(currentDir, GetUserDir());
                 dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
+                cursor.linecount=dirs.dir_count;
                 cursor=setCursor(UP, cursor.menuitem, cursor);
-                drawmenu(filelist, filelist[0], winscrollable, 0);
                 drawmenu(dirlist, dirlist[0], winmenu, 0);
+                cursor.menuitem = 0;
+                cursor.linemarker=0;
+                cursor.arrowcounter=0;
+                drawmenu(filelist, "---", winscrollable, cursor.linemarker);
+                drawmenu(filelist, filelist[0], winscrollable, 0);
                 refreshDirInfo(dirs);
                 break;
             case GOTO_ROOT_DIR:
