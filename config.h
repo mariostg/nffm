@@ -39,6 +39,7 @@
 #define DELETE_FILE          'd'   //Delete the file currently selected or the current directory.
 #define DELETE_MARKED_FILE   'D'   //Delete all the marked files.
 #define MARK_FILE            'm'   //Select multiple file for further acion.
+#define MOVE_MARKED_FILE     'M'   //Move marked file to selected folder.
 #define HIDDEN_FILE          '.'   //Show or hide hidden files and directories.
 #define OPEN_FILE            'o'   //Open the selected file with preferred application
 #define GOTO_HOME_DIR        'H'   //Got to home user directory.

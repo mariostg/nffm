@@ -201,6 +201,9 @@ char *join(const char dir[], const char file[])
     int dir_length;
     int file_length;
     
+    if(dir==NULL || file==NULL)
+        return NULL;
+
     dir_length=strlen(dir);
     file_length=strlen(file);
     if(dir_length<=0 || file_length<=0)
@@ -654,6 +657,35 @@ char *printCursor(cursor c)
             c.arrowcounterfile);
     return pc; 
 }
+
+int moveSelectedFiles(const char *newpath, struct filemarker **f)
+{
+    struct filemarker *m;
+    char *filename;
+    char *np;
+    if(newpath==NULL)
+    {
+        message("No destination path provided");
+        return -1;
+    }
+    for(m=*f;m!=NULL;m=m->next)
+    {
+        filename=rindex(m->fullpath, '/');
+        filename++;
+        np=malloc(strlen(newpath)+strlen(filename)+2);
+        strcpy(np, newpath);
+        addslash(np);
+        strcat(np, filename);
+        rename(m->fullpath, np);
+        logger("\n");
+        logger(m->fullpath);
+        logger("  ");
+        logger(np);
+        free(np);
+    }
+    return 0;
+}
+
 int renameSelectedFile(const char *currentPath, const char *oldName)
 {
     char *newName;
@@ -990,6 +1022,23 @@ int main(void)
         key=wgetch(winmenu);
         switch(key)
         {
+            case MOVE_MARKED_FILE:
+                userInput=join(currentDir, dirlist[cursor.menuitem]);
+                if (userInput==NULL)
+                {
+                    message("No good destination selected");
+                    break;
+                }
+                moveSelectedFiles(userInput, &filemarker);
+                free(filemarker);
+                filemarker=NULL;
+                dirs=DoDirectoryList(currentDir, dirlist, filelist, opt);
+                cursor.linecount=dirs.file_count;
+                cursor=setCursor(UP, cursor.menuitem, cursor);
+                drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
+                displayList(filemarker);
+                refreshDirInfo(dirs);
+                break;
             case ARCHIVEANDCOMPRESS:
                 if (cursor.winmarker==AT_DIR)
                 {
@@ -1231,6 +1280,9 @@ int main(void)
                     wintransit=newwin(maxheight,WINTRANSITW,1,MENUW+1+WINFILEW+1);
                     wresize(wintransit,maxheight, ws.ws_col-MENUW+1+WINFILEW+1);
                     displayList(filemarker);
+                    //winscrollable=newwin(MENUHT, WINFILEW, 1,MENUW+1);
+                    //wresize(winscrollable, MENUHT, WINFILEW);
+                    //drawmenu(filelist, filelist[0], winscrollable, 0);
                 } 
 
         }
@@ -1239,7 +1291,6 @@ int main(void)
         wrefresh(winheader);
 	}  while(key != 'q');
 	echo();	
-    start_color();
 	endwin();
     nffm_reset_color();
 	return 0;

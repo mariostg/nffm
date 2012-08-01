@@ -152,6 +152,7 @@ int findItemIndex(const char *item, char **itemList);
 int find_color(char *ext);
 int getNumber(WINDOW *w);
 int gzCompress(char *infile, char *outfile);
+int moveSelectedFiles(const char *newpath, struct filemarker **f);
 int renameSelectedFile(const char *currentPath, const char *oldName);
 int split(char delim, char *stringtosplit);
 int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[]);
