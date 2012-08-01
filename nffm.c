@@ -662,7 +662,7 @@ int moveSelectedFiles(const char *newpath, struct filemarker **f)
 {
     struct filemarker *m;
     char *filename;
-    char *np;
+    char *np=NULL;
     if(newpath==NULL)
     {
         message("No destination path provided");
@@ -688,9 +688,9 @@ int moveSelectedFiles(const char *newpath, struct filemarker **f)
 
 int renameSelectedFile(const char *currentPath, const char *oldName)
 {
-    char *newName;
-    char *oldPath;
-    char *newPath;
+    char *newName=NULL;
+    char *oldPath=NULL;
+    char *newPath=NULL;
     newName=getUserText("Enter file Name: ");
     oldPath=malloc(strlen(currentPath)+strlen(oldName)+1);
     newPath=malloc(strlen(currentPath)+strlen(newName)+1);
@@ -909,9 +909,9 @@ int zipMarkedFiles(char *destDir, char *tarname, struct filemarker **f)
 {
     struct filemarker *p;
     p=*f;
-    char *pfn;
-    char *gzpathname;
-    char *tarpathname;
+    char *pfn=NULL;
+    char *gzpathname=NULL;
+    char *tarpathname=NULL;
     int arrsize=0;
     strncat(tarname, ".tar", 5);
     tarpathname=malloc(strlen(tarname)+6);
