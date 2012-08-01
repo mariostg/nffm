@@ -837,7 +837,7 @@ void load_file_color(void)
                 exit(1);
             }
             color_content(i, &fc0[i].red, &fc0[i].green, &fc0[i].blue);//Store current color for reset on endwin();
-            sscanf(line, "%[^;];%d;%d;%d;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, (int*)&fc[i].bold);
+            sscanf(line, "%[^;];%hd;%hd;%hd;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, (int*)&fc[i].bold);
             init_color(i, fc[i].red, fc[i].green, fc[i].blue); 
             init_pair(i, i, COLOR_BLACK);
             i++;
