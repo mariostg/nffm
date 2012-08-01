@@ -668,6 +668,7 @@ int moveSelectedFiles(const char *newpath, struct filemarker **f)
         message("No destination path provided");
         return -1;
     }
+    //TODO check if dir exists.
     for(m=*f;m!=NULL;m=m->next)
     {
         filename=rindex(m->fullpath, '/');
@@ -694,6 +695,7 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
     newName=getUserText("Enter file Name: ");
     oldPath=malloc(strlen(currentPath)+strlen(oldName)+1);
     newPath=malloc(strlen(currentPath)+strlen(newName)+1);
+    //TODO check if newpath and oldpath exist.
     strcpy(oldPath,currentPath);
     strcat(oldPath,oldName);
     strcpy(newPath,currentPath);
@@ -1033,6 +1035,7 @@ int main(void)
                 cursor.linecount=dirs.file_count;
                 cursor=setCursor(UP, cursor.menuitem, cursor);
                 drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
+                drawmenu(filelist, filelist[cursor.menuitem], winscrollable, 0);
                 displayList(filemarker);
                 refreshDirInfo(dirs);
                 break;

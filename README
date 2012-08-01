@@ -107,7 +107,8 @@ Color listing for files names
 Below is a small sample of the color listing configuration file (color.conf)
 The first line beginning with folder will set the color of the folder listing.
 The others set the color for the appropriate file extension.
-The semi-colon separated list read file extension, red level, green level, blue level, not defined yet.
+The semi-colon separated list read file extension, red level, green level, 
+blue level, not defined yet.
 
 folder;1000;1000;1000;1
 c;0;500;500;1 
@@ -128,6 +129,21 @@ Must have tar and gzip installed.  Default command is 'm' to mark the files
 follow by 'z'.  In the message bar, enter the name of the archive.  Exemple give 
 MyArchiveName will create MyArchiveName.tar.gz.  The tar.gz archive is created 
 in the current folder.
+
+------------
+Moving files
+------------
+I assume default configuration keys.  Use 'm' to mark the files to move while 
+the file pane is active.  Use tab key to activate folder pane.  Navigate to the 
+destination folder.  The destination folder must be highlighted.  Then hit 'M' 
+(capital M) to move the files.
+
+-----------------
+Delete many files
+-----------------
+I assume default configuration keys.  Use 'm' to mark the files to delete while 
+the file pane is active. Use 'D' (capital D) to delete the marked files.  Files
+are not going into a trash can.
 
 ----
 ToDo
