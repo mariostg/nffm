@@ -1309,9 +1309,6 @@ int main(void)
 	}  while(key != 'q');
 	echo();	
 	endwin();
-    int i;
-    for (i=0;i<256;i++)
-        printf(" %d colors for %s = %hd\n",i, color[i].ext, color[i].colorindex);
 	return 0;
 }
 
