@@ -43,13 +43,14 @@
 #define CONF_FILE "extension.conf"
 #define USER_CONF ".config/nffm/"
 #define COLOR_FILE "color.conf"
+#define COLORINDEX 40
 #define SYSTEM_CONF "/etc/nffm/"
 #define FILEMAX 30          //The number of files listed
 #define MAXBEGIN 20         //Max number of characters allowed to set file begin with option.
 #define MAXDIGIT 3           //not more than 999
 #define MAXDIRECTORY 80      //Max Length of directory name
 #define MAXDIRLIST 3000
-#define MAXEXTENSION 250
+#define MAXEXTENSION 380
 #define MAXFILELIST 3000
 #define MAXMENUSIZE 3000     //Max number of menu items
 #define MENUHT 30           //The height of menu + header
@@ -61,7 +62,7 @@
 #define WINFILEW 45          //The width of file window
 #define WINTRANSITW 35       //The width of the temporary display area of selected files
 
-enum nffm_colors{MAGENTA_BLACK=1, YELLOW_BLACK=2, GREEN_BLACK=3, RED_BLACK=4, NFFM_ORANGE=10};
+enum nffm_colors{MAGENTA_BLACK=1, YELLOW_BLACK=2, GREEN_BLACK=3, RED_BLACK=4};
 
 typedef struct{
 	int menuitem;         //index of directory or filelist
@@ -110,13 +111,10 @@ typedef struct{
     char file_begin[MAXBEGIN+1];
 }options;
 
-struct fileColor{
-    char extension[20];
-    short red;
-    short green;
-    short blue;
-    bool bold;
-}fc[MAXEXTENSION], fc0[MAXEXTENSION];
+struct colorext{
+    char ext[60];
+    short colorindex;
+}color[MAXEXTENSION];
 
 WINDOW *winheader, *winfooter, *windirinfo, *winmenu, 
        *winscrollable, *currentwin, *winfileinfo, *wintransit;
@@ -160,14 +158,13 @@ int xdgFile(char *file);
 int zipMarkedFiles(char *destDir, char *zipathname, struct filemarker **f);
 options setFileFilter(options opt);
 struct stat fileStat(char filepath[]);
-void load_file_color(void);
 void logger(const char *logger);
 void markOneMoreFile(struct filemarker **filelist, char *filepath);
 void message(char *msg);
 void nffm_init_color(void);
-void nffm_reset_color(void);
 void normalColor(WINDOW *w, cursor c, char *item);
 void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
+int readlscolor(void);
 
 #endif /* NFFM_H */

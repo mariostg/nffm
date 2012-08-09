@@ -104,23 +104,8 @@ gnumeric /usr/bin/gnumeric
 Color listing for files names
 -----------------------------
 
-Below is a small sample of the color listing configuration file (color.conf)
-The first line beginning with folder will set the color of the folder listing.
-The others set the color for the appropriate file extension.
-The semi-colon separated list read file extension, red level, green level, 
-blue level, not defined yet.
-
-folder;1000;1000;1000;1
-c;0;500;500;1 
-git;600;200;0;0
-gnumeric;500;200;500;1
-gz;500;100;900;1
-html:0;500;1000;1
-jpg;500;0;500;1
-js;1000;1000;0;1 
-json:100;400;800;0
-kdb;0;200;200;0
-pdf;800;100;500;0
+Color listing is as per $LS_COLORS environment variable.
+Color for folder listing is as per DIRCOLOR define in config.h
 
 -------------------------------
 Archiving and compressing files
@@ -150,7 +135,6 @@ ToDo
 ----
 
 File copying
-File moving
 Implement an rc file
 Fix window resize
 Other ideas.

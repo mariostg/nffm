@@ -51,5 +51,7 @@
 #define FORMATTHOUSAND       true  //Display number with thousand separator
 #define CONFIRMDELETEMANY    true //Ask for confirmation of every file when deleting many files.
 #define USECOLOR             true //Whether or not you want color.
+#define USELSCOLOR           true //If USECOLOR, use LSCOLOR pls.  I could implement sometging else...
+#define DIRCOLOR             110  //The color for folder list
 #define ARCHIVEANDCOMPRESS   'z'  //tar plus gzip selected files.
 #endif /* CONFIG_H */

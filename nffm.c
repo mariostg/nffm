@@ -505,7 +505,7 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
     int printline=0;
     int dir_index=fromline;
     int h;
-    int colorindex=0;
+    int colorindex=COLORINDEX;
     werase(w);
     if (w==winscrollable)
         h=FILEMAX;
@@ -520,12 +520,11 @@ int drawmenu(char *list[], char *item, WINDOW *w, int fromline)
         {
             colorindex=find_color(getFileExtension(list[dir_index]));
             if (colorindex==-1)
-                colorindex=1;
+                colorindex=COLORINDEX;
         }
         else
         {
-            //colorindex=YELLOW_BLACK;
-            colorindex=10;
+            colorindex=DIRCOLOR;
         }
         wattron(w, COLOR_PAIR(colorindex));
         mvwprintw(w, printline++, 0, "%-3d%-42s", dir_index, list[dir_index]);
@@ -807,67 +806,76 @@ void nffm_init_color(void)
     init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_GREEN, COLOR_BLACK);
     init_pair(4, COLOR_YELLOW, COLOR_RED);  //For warning purposes
-    load_file_color();
+    if(USELSCOLOR)
+        readlscolor();
 }
 
-void load_file_color(void)
+int readlscolor(void)
 {
-    FILE *fp;
-    char line[STRLEN];
-    int i=10;
+    char *lscolor=getenv("LS_COLORS");
+    char lsitem[MAXEXTENSION]={0};
+    char ext[30];
+    int scanread=0;
+    short p1, p2, p3, p4, p5, p6, p7;
+    int i;
+    int j=0;
+    int c=0;
 
-    char config_path[80];
-    strcpy(config_path, GetUserDir());
-    addslash(config_path);
-    strcat(config_path, USER_CONF);
-    strcat(config_path, COLOR_FILE);
-    fp=fopen(config_path,"r");
-
-    if (fp==NULL)//No locale  configuration file available...
+    if(lscolor==NULL)
     {
-        strcpy(config_path, SYSTEM_CONF);
-        strcat(config_path, COLOR_FILE);
-        fp=fopen(config_path,"r");
+        perror("$LS_COLORS is empty.");
+        return -1;
     }
-    if(fp)//Hopefully there is system wide conf file.
+    for(i=0; i<strlen(lscolor);i++)
     {
-        while(fgets(line, STRLEN, fp))
+        if(lscolor[i]!=':')
         {
-            if(i>MAXEXTENSION)
+            lsitem[j]=lscolor[i];
+            j++;
+            lsitem[j]='\0';
+            if(j>MAXEXTENSION)
             {
-                perror("Too many file extension");
-                exit(1);
+                perror("Too long lsitem");
+                return -1;
             }
-            color_content(i, &fc0[i].red, &fc0[i].green, &fc0[i].blue);//Store current color for reset on endwin();
-            sscanf(line, "%[^;];%hd;%hd;%hd;%d",fc[i].extension, &fc[i].red, &fc[i].green, &fc[i].blue, (int*)&fc[i].bold);
-            init_color(i, fc[i].red, fc[i].green, fc[i].blue); 
-            init_pair(i, i, COLOR_BLACK);
-            i++;
         }
-        fclose(fp);
+        else
+        {
+            scanread=sscanf(lsitem,"%[^=]=%hd;%hd;%hd;%hd;%hd;%hd;%hd", ext, &p1, &p2, &p3, &p4, &p5, &p6, &p7);
+            if (ext[0]=='*')
+            {
+                switch (scanread)
+                {
+                    case(4):
+                    case(5):
+                    case(6):
+                    case(7):
+                        strcpy(color[c].ext, &ext[2]);
+                        color[c].colorindex=p3;
+                        break;
+                }
+                if(color[c].colorindex!=0)
+                {
+                    init_pair(color[c].colorindex, color[c].colorindex, COLOR_BLACK);
+                    c++;
+                }
+            }
+            j=0;
+        }
     }
+    return 0;
 }
 
 int find_color(char *ext)
 {
-    int i=10;
-    while(fc[i].extension[0]!='\0')
+    int i=0;
+    while(color[i].ext[0]!='\0')
     {
-        if(strcmp(fc[i].extension, ext)==0)
-            return i;
+        if(strcmp(color[i].ext, ext)==0)
+            return color[i].colorindex;
         i++;
     }
-    return -1;
-}
-
-void nffm_reset_color(void)
-{
-    int i=10;
-    while(fc[i].extension[0]!='\0')
-    {
-        init_color(i, fc0[i].red, fc0[i].green, fc0[i].blue); 
-        i++;
-    }
+    return 1;
 }
 
 int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[])
@@ -991,11 +999,11 @@ int main(void)
     directories dirs;
 
 	initscr();
+    winmenu=newwin(MENUHT, MENUW, 1, 0);
     if(USECOLOR && has_colors() && can_change_color())
         nffm_init_color();
     getmaxyx(stdscr, maxheight, maxwidth);
  
-    winmenu=newwin(MENUHT, MENUW, 1, 0);
     windirinfo=newwin(5, MENUW, MENUHT+2, 0);
     winfileinfo=newwin(5, MENUW, MENUHT+2+3, 0);
     winheader=newwin(1,maxwidth,0,0);
@@ -1301,7 +1309,10 @@ int main(void)
 	}  while(key != 'q');
 	echo();	
 	endwin();
-    nffm_reset_color();
+    int i;
+    for (i=0;i<256;i++)
+        printf(" %d colors for %s = %hd\n",i, color[i].ext, color[i].colorindex);
 	return 0;
 }
+
 
