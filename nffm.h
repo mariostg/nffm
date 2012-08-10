@@ -20,6 +20,7 @@
 #ifndef NFFM_H
 #define NFFM_H
 
+#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -166,5 +167,6 @@ void normalColor(WINDOW *w, cursor c, char *item);
 void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
 int readlscolor(void);
+void my_tolower(char *s);
 
 #endif /* NFFM_H */

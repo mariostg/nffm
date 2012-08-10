@@ -247,6 +247,13 @@ char * getFileExtension(const char *filename)
     return (p==NULL) ? "default": ++p;
 }
 
+
+void my_tolower(char *s)
+{
+    for(;*s;s++)
+        *s=(char)tolower(*s);
+}
+
 appCommand getCommand(const char *extension)
 {
     FILE *fp;
@@ -256,7 +263,10 @@ appCommand getCommand(const char *extension)
     ac.extension[0]='\0';
     char scan_extension[10];
     char config_path[80];
-
+    char copyextension[80];
+    
+    strcpy(copyextension, extension);
+    my_tolower(copyextension);
     strcpy(config_path, GetUserDir());
     addslash(config_path);
     strcat(config_path, USER_CONF);
@@ -274,7 +284,7 @@ appCommand getCommand(const char *extension)
         while(fgets(line, linelength,fp))
         {
             sscanf(line,"%s",scan_extension);
-            if(strcmp(scan_extension,extension)==0) //extension found
+            if(strcmp(scan_extension,copyextension)==0) //extension found
             {
                 if(sscanf(line,"%s%s%s%s", ac.extension, ac.path, ac.arg, ac.execarg)==4)
                     return ac;
@@ -1229,6 +1239,8 @@ int main(void)
                 drawmenu(activelist, activelist[cursor.menuitem], currentwin, cursor.linemarker);
                 break;
             case VIEW_FILES:
+                if (cursor.winmarker==AT_FILE)
+                    break;
                 if(dirlist[0]=='\0' || strcmp(dirlist[cursor.menuitem],"..")==0 || strcmp(dirlist[cursor.menuitem],".")==0)
                     break;
                 cursor.linemarker=0;
