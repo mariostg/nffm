@@ -1049,7 +1049,7 @@ int main(void)
     winheader=newwin(1,maxwidth,0,0);
     winfooter=newwin(1,maxwidth,maxheight-1,0);
     winscrollable=newwin(MENUHT, WINFILEW, 1,MENUW+1);
-    wintransit=newwin(maxheight,WINTRANSITW,1,MENUW+1+WINFILEW+1);
+    wintransit=newwin(maxheight,WINTRANSITW,1,MENUW+1+WINFILEW);
 
     dirs=DoDirectoryList(ROOT, dirlist, filelist, opt); 
     cursor.linecount=dirs.dir_count;
