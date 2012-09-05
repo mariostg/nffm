@@ -975,6 +975,36 @@ int findItemIndex(const char *item, char **itemList)
     return -1;
 }
 
+void showkeys()
+{
+    WINDOW *winHelp;
+    winHelp=newwin(MENUHT, WINFILEW+WINTRANSITW, 1,MENUW+1);
+    wprintw(winHelp, "%c %s", NEXT_DIR,            "j Next dir or file down the list according to active pane\n");
+    wprintw(winHelp, "%c %s", PREVIOUS_DIR,        "k Dir or file up the list according active pane\n");
+    wprintw(winHelp, "%c %s", VIEW_FILES,          "l View files of current dir\n");
+    wprintw(winHelp, "%c %s", PARENT_DIR,          "h Move one dir up the hierararchy\n");
+    wprintw(winHelp, "%c %s", GOTO_DIR_NUMBER,     "n followed by the dir or file number\n");
+    wprintw(winHelp, "%c %s", MOVE_PAGE_DOWN,      "F Scroll one page down\n");
+    wprintw(winHelp, "%c %s", MOVE_PAGE_UP,        "U Scroll one page up\n");
+    wprintw(winHelp, "%c %s", DELETE_FILE,         "d Delete the file currently selected or the current directory.\n");
+    wprintw(winHelp, "%c %s", DELETE_MARKED_FILE,  "D Delete all the marked files.\n");
+    wprintw(winHelp, "%c %s", MARK_FILE,           "m Select multiple file for further acion.\n");
+    wprintw(winHelp, "%c %s", MOVE_MARKED_FILE,    "M Move marked file to selected folder.\n");
+    wprintw(winHelp, "%c %s", HIDDEN_FILE,         ". Show or hide hidden files and directories.\n");
+    wprintw(winHelp, "%c %s", OPEN_FILE,           "o Open the selected file with preferred application\n");
+    wprintw(winHelp, "%c %s", GOTO_HOME_DIR,       "H Got to home user directory.\n");
+    wprintw(winHelp, "%c %s", GOTO_ROOT_DIR,       "/ Goto / directory.\n");
+    wprintw(winHelp, "%c %s", CREATE_FILE,         "c Create an empty file in current directory or create directory\n");
+    wprintw(winHelp, "%c %s", RENAME_FILE,         "r rename the selected file\n");
+    wprintw(winHelp, "%c %s", SELECTBEGINWITH,     "^ Select the files that begin with expression\n");
+    wprintw(winHelp, "%c %s", SELECTWITHEXTENSION, "f Filer for files with given extension\n");
+    wprintw(winHelp, "%c %s", ARCHIVEANDCOMPRESS,  "z tar plus gzip selected files.\n");
+    wprintw(winHelp, "%c %s", SHOWKEYS,            "? Show help about navigation keys\n");
+    box(winHelp, 0, 0);
+    wrefresh(winHelp);
+    delwin(winHelp);
+}
+
 int main(void)
 {
 	int key=0;
@@ -1039,6 +1069,12 @@ int main(void)
         key=wgetch(winmenu);
         switch(key)
         {
+            case SHOWKEYS:
+                showkeys();
+                getchar();
+                drawmenu(filelist, filelist[cursor.menuitem], winscrollable, 0);
+                displayList(filemarker);
+                break;
             case MOVE_MARKED_FILE:
                 userInput=join(currentDir, dirlist[cursor.menuitem]);
                 if (userInput==NULL)
@@ -1320,6 +1356,15 @@ int main(void)
         wrefresh(winheader);
 	}  while(key != 'q');
 	echo();	
+    /* trying to diagnose memory leaks....
+    delwin(winmenu);
+    delwin(windirinfo);
+    delwin(winfileinfo);
+    delwin(winscrollable);
+    delwin(wintransit);
+    delwin(winfooter);
+    delwin(winheader);
+    */
 	endwin();
 	return 0;
 }

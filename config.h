@@ -54,4 +54,6 @@
 #define USELSCOLOR           true //If USECOLOR, use LSCOLOR pls.  I could implement sometging else...
 #define DIRCOLOR             110  //The color for folder list
 #define ARCHIVEANDCOMPRESS   'z'  //tar plus gzip selected files.
+#define SHOWKEYS             '?'  //Show help about navigation keys
+
 #endif /* CONFIG_H */

@@ -168,5 +168,6 @@ void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
 int readlscolor(void);
 void my_tolower(char *s);
+void showkeys();
 
 #endif /* NFFM_H */
