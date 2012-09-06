@@ -47,7 +47,7 @@
 #define CREATE_FILE          'c'   //Create an empty file in current directory or create directory
 #define RENAME_FILE          'r'   //rename the selected file
 #define SELECTBEGINWITH      '^'   //Select the files that begin with expression
-#define SELECTWITHEXTENSION  'f'   //Filer for files with given extension
+#define SELECTWITHEXTENSION  'f'   //Filter for files with given extension
 #define FORMATTHOUSAND       true  //Display number with thousand separator
 #define CONFIRMDELETEMANY    true //Ask for confirmation of every file when deleting many files.
 #define USECOLOR             true //Whether or not you want color.

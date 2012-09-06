@@ -687,10 +687,6 @@ int moveSelectedFiles(const char *newpath, struct filemarker **f)
         addslash(np);
         strcat(np, filename);
         rename(m->fullpath, np);
-        logger("\n");
-        logger(m->fullpath);
-        logger("  ");
-        logger(np);
         free(np);
     }
     return 0;
@@ -979,14 +975,14 @@ void showkeys()
 {
     WINDOW *winHelp;
     winHelp=newwin(MENUHT, WINFILEW+WINTRANSITW, 0,MENUW+1);
-    wprintw(winHelp, "\n <%c> %s", NEXT_DIR,            "Next dir or file down the list according to active pane\n");
-    wprintw(winHelp, " <%c> %s", PREVIOUS_DIR,        "Dir or file up the list according active pane\n");
+    wprintw(winHelp, "\n <%c> %s", NEXT_DIR,            "Goto Next folder or file down the list according to active pane\n");
+    wprintw(winHelp, " <%c> %s", PREVIOUS_DIR,        "Goto previous folder or file up the list according active pane\n");
     wprintw(winHelp, " <%c> %s", VIEW_FILES,          "View files of current dir\n");
-    wprintw(winHelp, " <%c> %s", PARENT_DIR,          "Move one dir up the hierararchy\n");
-    wprintw(winHelp, " <%c> %s", GOTO_DIR_NUMBER,     "followed by the dir or file number\n");
+    wprintw(winHelp, " <%c> %s", PARENT_DIR,          "Move one folder up the hierararchy\n");
+    wprintw(winHelp, " <%c> %s", GOTO_DIR_NUMBER,     "If followed by number, go to the corresponding folder or file\n");
     wprintw(winHelp, " <%c> %s", MOVE_PAGE_DOWN,      "Scroll one page down\n");
     wprintw(winHelp, " <%c> %s", MOVE_PAGE_UP,        "Scroll one page up\n");
-    wprintw(winHelp, " <%c> %s", DELETE_FILE,         "Delete the file currently selected or the current directory.\n");
+    wprintw(winHelp, " <%c> %s", DELETE_FILE,         "Delete the file or directory currently selected.\n");
     wprintw(winHelp, " <%c> %s", DELETE_MARKED_FILE,  "Delete all the marked files.\n");
     wprintw(winHelp, " <%c> %s", MARK_FILE,           "Select multiple file for further acion.\n");
     wprintw(winHelp, " <%c> %s", MOVE_MARKED_FILE,    "Move marked file to selected folder.\n");
