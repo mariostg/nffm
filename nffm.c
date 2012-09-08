@@ -223,6 +223,27 @@ char *join(const char dir[], const char file[])
     return joined;
 }
 
+char *join_words(int n, char *delim, ...){
+    int i=0;
+    va_list pword;
+    char *word=NULL;
+    char *words=NULL;
+    
+    va_start(pword, delim);
+    word = va_arg(pword, char *);
+
+    words = malloc(strlen(word)+strlen(delim)+1);
+    strcpy(words, word);
+    for (i=1; i<n; i++)
+    {
+        word = va_arg(pword, char *);
+        words=realloc(words, strlen(words)+strlen(word)+strlen(delim)+1);
+        strcat(words,delim);
+        strcat(words, word);
+    }
+    return words;
+}
+
 bool isHiddenFile(char s[])
 {
     return (s[0]=='.') ? true : false;
@@ -1029,7 +1050,6 @@ int main(void)
     char *dirlist[MAXDIRLIST];    //The child directories of the current directory
     char *filelist[MAXFILELIST];   //The files of the current directory
     char **activelist;      //dirlist or dirfilt
-    char msg[100];              //To display messages on status bar
     char *userInput;
     struct winsize ws;
     directories dirs;
@@ -1160,9 +1180,8 @@ int main(void)
             case OPEN_FILE:
                 if(xdgFile(join(currentDir, activelist[cursor.menuitem]))==-1)
                 {
-                    strcpy(msg,"No application found for extension ");
-                    strcat(msg,getFileExtension(activelist[cursor.menuitem]));
-                    message(msg);
+                    message(join_words(2, " ", "No application found for extension", 
+                                getFileExtension(activelist[cursor.menuitem])));
                 }
                 break;
             case DELETE_MARKED_FILE:

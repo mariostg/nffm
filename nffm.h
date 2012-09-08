@@ -28,6 +28,7 @@
 #include <malloc.h>
 #include <ncurses.h> //includes stdio.h and stdbool.h
 #include <pwd.h>      //for current user directory
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -60,7 +61,7 @@
 #define ROOT "/"
 #define SHOW_HIDDEN 0
 #define STRLEN 1024
-#define WINFILEW 45          //The width of file window
+#define WINFILEW 46          //The width of file window
 #define WINTRANSITW 35       //The width of the temporary display area of selected files
 
 enum nffm_colors{MAGENTA_BLACK=1, YELLOW_BLACK=2, GREEN_BLACK=3, RED_BLACK=4};
@@ -134,6 +135,7 @@ char *delimStr(char nbr[]);
 char *dtg(time_t *tm);
 char *getUserText(const char *question);
 char *join(const char s1[], const char s2[]);
+char *join_words(int n, char *delim, ...);
 char *printCursor(cursor c);
 char *printCursor(cursor c);
 cursor setCursor(int direction, int selection, cursor c);
@@ -152,6 +154,7 @@ int find_color(char *ext);
 int getNumber(WINDOW *w);
 int gzCompress(char *infile, char *outfile);
 int moveSelectedFiles(const char *newpath, struct filemarker **f);
+int readlscolor(void);
 int renameSelectedFile(const char *currentPath, const char *oldName);
 int split(char delim, char *stringtosplit);
 int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[]);
@@ -162,12 +165,11 @@ struct stat fileStat(char filepath[]);
 void logger(const char *logger);
 void markOneMoreFile(struct filemarker **filelist, char *filepath);
 void message(char *msg);
+void my_tolower(char *s);
 void nffm_init_color(void);
 void normalColor(WINDOW *w, cursor c, char *item);
 void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
-int readlscolor(void);
-void my_tolower(char *s);
 void showkeys();
 
 #endif /* NFFM_H */
