@@ -40,6 +40,8 @@
 #include <unistd.h>    //exec
 #include <zlib.h>
 
+#define errno (*__errno_location ())
+
 #define AT_DIR -1
 #define AT_FILE 1
 #define CONF_FILE "extension.conf"
@@ -159,6 +161,7 @@ int renameSelectedFile(const char *currentPath, const char *oldName);
 int split(char delim, char *stringtosplit);
 int tarOneFile(char tarFileName[], char tarPathname[], char tarSaveName[]);
 int xdgFile(char *file);
+int YesOrNo(const char *question);
 int zipMarkedFiles(char *destDir, char *zipathname, struct filemarker **f);
 options setFileFilter(options opt);
 struct stat fileStat(char filepath[]);

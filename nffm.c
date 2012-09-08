@@ -693,10 +693,19 @@ int moveSelectedFiles(const char *newpath, struct filemarker **f)
     struct filemarker *m;
     char *filename;
     char *np=NULL;
+    int user_answer;
+    int retval=0;
+    errno=0;
     if(newpath==NULL)
     {
         message("No destination path provided");
         return -1;
+    }
+    user_answer=YesOrNo(join_words(2, " ", "Really move file(s) to", newpath));
+    if(user_answer==0)
+    {
+        message("Action cancelled");
+        return 0;
     }
     //TODO check if dir exists.
     for(m=*f;m!=NULL;m=m->next)
@@ -707,7 +716,14 @@ int moveSelectedFiles(const char *newpath, struct filemarker **f)
         strcpy(np, newpath);
         addslash(np);
         strcat(np, filename);
-        rename(m->fullpath, np);
+        retval=rename(m->fullpath, np);
+        if (retval != 0)
+        {
+            message(join_words(4, " ", "Could not move file", m->fullpath, "to", np));
+            endwin();
+            perror(np);
+            exit(EXIT_FAILURE);
+        }
         free(np);
     }
     return 0;
@@ -791,6 +807,33 @@ char *getUserText(const char *question)
     wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
     wrefresh(winfooter);
     return user_text; 
+}
+
+int YesOrNo(const char *question)
+{
+    int answer;
+    char c;
+    wbkgd(winfooter, COLOR_PAIR(RED_BLACK));
+    mvwprintw(winfooter, 0, 0, "%s\?", question);
+    wrefresh(winfooter);
+    while((c=wgetch(winmenu))!='y' && c!='Y' && c!='n' && c!='N')
+        ;
+    werase(winfooter);
+    switch (c)
+    {
+        case 'y':
+        case 'Y':
+            answer=1;
+            break;
+        default:
+            answer=0;
+            break;
+    }
+    wrefresh(winfooter);
+    werase(winfooter);
+    wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
+    wrefresh(winfooter);
+    return answer; 
 }
 
 int createDir(const char *parentDir, const char *childDir)
