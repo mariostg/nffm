@@ -752,32 +752,20 @@ int renameSelectedFile(const char *currentPath, const char *oldName)
 
 int deleteFile(const char *filepath, bool confirmDeleteMany)
 {
-    char c;
     int deleteOk=-1;
+    int user_answer;
+    
     if(confirmDeleteMany)
     {
-        wbkgd(winfooter, COLOR_PAIR(RED_BLACK));
-        mvwprintw(winfooter, 0, 0, "%s %s\?", "Do you really want to DELETE FILE ", filepath);
-        wrefresh(winfooter);
-        while((c=wgetch(winmenu))!='y' && c!='Y' && c!='n' && c!='N')
-            ;
-        werase(winfooter);
-        switch (c)
+        user_answer=YesOrNo(join_words(2, " ", "Do you really want to DELETE FILE", filepath));
+        if(user_answer==1)
         {
-            case 'y':
-            case 'Y':
-                deleteOk=remove(filepath);
-                mvwprintw(winfooter, 0, 0, "%s %c", "DELETE FILE ", c);
-                break;
-            default:
-                mvwprintw(winfooter, 0, 0, "%s", "Action cancelled");
-                break;
+            deleteOk=remove(filepath);
         }
-        wrefresh(winfooter);
-        sleep(0.5);
-        werase(winfooter);
-        wbkgd(winfooter, COLOR_PAIR(MAGENTA_BLACK));
-        wrefresh(winfooter);
+        else
+        {
+            message("Action cancelled");
+        }
     }
     else
     {
