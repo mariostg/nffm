@@ -3,3 +3,4 @@ nffm
 tags
 *.o
 .out
+test.*

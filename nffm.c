@@ -597,23 +597,35 @@ void refreshFileInfo(char currentDir[], char currentFile[])
     char *t;
     char *fmt_size;
     char *filepath;
+    char privilege[9]={};
+    char filetype[20]={};
     filepath = join(currentDir, currentFile);
     fileinfo = fileStat(filepath);
+    toStringPerms(fileinfo.st_mode, privilege);    
+    toStringFileType(fileinfo.st_mode, filetype);
+    
     fmt_size=delimLong((long)fileinfo.st_size);
     mvwprintw(winfileinfo,0,0,"%-*s", MENUW, currentFile);
     mvwprintw(winfileinfo,1,0,"%18s Bytes",fmt_size);
+    
     t=dtg(&fileinfo.st_atime);
     mvwprintw(winfileinfo,2,0,"Access: %16s",t);
     free(t);
     t=NULL;
+    
     t=dtg(&fileinfo.st_mtime);
     mvwprintw(winfileinfo,3,0,"Modif:  %16s",t);
     free(t);
     t=NULL;
+    
     t=dtg(&fileinfo.st_ctime);
     mvwprintw(winfileinfo,4,0,"Created:%16s",t);
     free(t);
     t=NULL;
+    
+    mvwprintw(winfileinfo, 2, 25, "Privileges %s", privilege);
+    mvwprintw(winfileinfo, 3, 25, "File Type  %s", filetype);
+
     free(fmt_size);
     fmt_size=NULL;
     free(filepath);
@@ -1051,6 +1063,42 @@ void showkeys()
     box(winHelp, 0, 0);
     wrefresh(winHelp);
     delwin(winHelp);
+}
+
+int toStringPerms(mode_t perm, char sp[])
+{
+    char p[]="?????????";
+    p[0]=(perm & S_IRUSR ? 'r' : '-');
+    p[1]=(perm & S_IWUSR ? 'w' : '-');
+    p[2]=(perm & S_IXUSR ? 'x' : '-');
+    p[3]=(perm & S_IRGRP ? 'r' : '-');
+    p[4]=(perm & S_IWGRP ? 'w' : '-');
+    p[5]=(perm & S_IXGRP ? 'x' : '-');
+    p[6]=(perm & S_IROTH ? 'r' : '-');
+    p[7]=(perm & S_IWOTH ? 'w' : '-');
+    p[8]=(perm & S_IXOTH ? 'x' : '-');
+    strcpy(sp, p);
+    return 0;
+}
+
+int toStringFileType(mode_t perm, char *ft){
+    char *types[]={"Regular", "Directory", "Character Device",
+        "Block Device", "Symbolic link", " FIFO or pipe",
+        "socket", "Unknown"};
+    int type=99;
+
+    switch (perm & S_IFMT){
+        case S_IFREG:  type=0; break;
+        case S_IFDIR:  type=1; break;
+        case S_IFCHR:  type=2; break;
+        case S_IFBLK:  type=3; break;
+        case S_IFLNK:  type=4; break;
+        case S_IFIFO:  type=5; break;
+        case S_IFSOCK: type=6; break;
+        default     :  type=7; break;
+    }
+    strcpy(ft, types[type]);
+    return 0;
 }
 
 int main(void)

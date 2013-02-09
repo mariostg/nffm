@@ -174,5 +174,7 @@ void normalColor(WINDOW *w, cursor c, char *item);
 void refreshDirInfo(directories dirs);
 void refreshFileInfo(char currentDir[], char currentFile[]);
 void showkeys();
+int toStringFileType(mode_t perm, char *ft);
+int toStringPerms(mode_t perm, char sp[]);
 
 #endif /* NFFM_H */
