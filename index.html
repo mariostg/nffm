@@ -62,7 +62,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -76,10 +76,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Nothing Fancy File Manager Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><p>NFFM (Not a Fancy File Manager) is a mouseless ncurses file manager written in C.</p>
+<p>The left pane lists the directories, the middle pane lists the files within the current directory and the right pane lists files marked for further action.</p>
+<p>Navigation through the file manager is mainly done throught keys h, j, k, l and tab. One can modify the <a class="el" href="config_8h_source.html">config.h</a> file and recompile the program to modify the key binding. Eventually, there will be an rc file...</p>
+<div class="image">
+<img src="nffm.png" alt="nffm.png"/>
+</div>
+ </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 9 2013 21:49:40 for Nothing Fancy File Manager by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 10 2013 11:11:59 for Nothing Fancy File Manager by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.1
 </small></address>
