@@ -1,3 +1,18 @@
+/** \file
+
+\mainpage
+NFFM (Not a Fancy File Manager) is a mouseless ncurses file manager written in C.
+
+The left pane lists the directories, the middle pane lists the files within 
+the current directory and the right pane lists files marked for further action.
+
+Navigation through the file manager is mainly done throught keys h, j, k, l and tab.
+One can modify the config.h file and recompile the program to modify the key binding.
+Eventually, there will be an rc file...
+
+\image html nffm.png
+*/
+
 /*
  *   Copyright (C) 2012 by Mario St-Gelais
  * 
