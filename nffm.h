@@ -133,7 +133,7 @@ bool isHiddenFile(char s[]);
 char * getFileExtension(const char *filename);
 char *GetUserDir(void);
 char *delimLong(long nbr);
-char *delimStr(char nbr[]);
+char *format2thousand(char nbr[]);
 char *dtg(time_t *tm);
 char *getUserText(const char *question);
 char *join(const char s1[], const char s2[]);

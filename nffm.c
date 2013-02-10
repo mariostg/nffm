@@ -113,6 +113,8 @@ void logger(const char *logger)
     fclose(flog);
 }
 
+/**Return a structure containing the stat of filepath[]
+ */
 struct stat fileStat(char filepath[])
 {
     struct stat statbuf;
@@ -125,6 +127,9 @@ struct stat fileStat(char filepath[])
     return statbuf;
 }
 
+/**Add a slash at the beginning and end of adir[].
+ The function first check if slash exists in adir[] and put one where necessary.
+ */
 int addslash(char adir[])
 {
     int length;
@@ -151,18 +156,19 @@ int addslash(char adir[])
     return 0;
 }
 
+/**Strip from string anything that comes after the first char delim.
+ Return an integer corresponding to the position of delim in the string.
+ */
 int split(char delim, char *string)
 {
     if(strcmp(string,"/")==0)
         return 0;
     int lastPos;
     lastPos=strlen(string);
-    int pos;
     int lastDelim;
-    int i;
+    int i=0;
     char c;
-    i=0;
-    for(pos=0;pos<lastPos-1;pos++)
+    for(int pos=0; pos<lastPos-1; pos++)
     {
         c=string[pos];
         if(c==delim)
@@ -175,7 +181,7 @@ int split(char delim, char *string)
     return lastDelim;
 }
 
-char *delimStr(char nbr[])
+char *format2thousand(char nbr[])
 {
     int nbr_length=strlen(nbr);
     int nbrfmt_length;
@@ -205,7 +211,7 @@ char *delimLong(long nbr)
     char *nbrstr=malloc(i+2);
     char *longstr;
     sprintf(nbrstr,"%ld",nbr);
-    longstr=delimStr(nbrstr);
+    longstr=format2thousand(nbrstr);
     free(nbrstr);
     nbrstr=NULL;
     return longstr;
