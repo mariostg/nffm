@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -g
+CFLAGS  = -g -std=gnu99
 LDFLAGS = -lncurses -lz -ltar
 
 SRC = nffm.c
