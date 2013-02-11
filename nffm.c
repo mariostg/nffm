@@ -180,7 +180,8 @@ int split(char delim, char *string)
     string[lastDelim]='\0';
     return lastDelim;
 }
-
+/**Add thousand separators (,) to the number passed on.
+ */
 char *format2thousand(char nbr[])
 {
     int nbr_length=strlen(nbr);
@@ -200,6 +201,9 @@ char *format2thousand(char nbr[])
     return fmtnbr;
 }
 
+/**Transform a long into string and call format2thousand to add
+ thousand separators.
+ */
 char *delimLong(long nbr)
 {
     int i=0;
@@ -216,7 +220,9 @@ char *delimLong(long nbr)
     nbrstr=NULL;
     return longstr;
 }
-
+/**Append const char file[] to const char dir[] and return that string.
+ Append a "/" at the of dir[] if there is none.
+ */
 char *join(const char dir[], const char file[])
 {
     int dir_length;
@@ -244,6 +250,9 @@ char *join(const char dir[], const char file[])
     return joined;
 }
 
+/**Concatenate a list of words together inserting between each word the specified
+ delimiter.  The functon returns the concatenated string.
+ */
 char *join_words(int n, char *delim, ...){
     int i=0;
     va_list pword;
@@ -265,11 +274,17 @@ char *join_words(int n, char *delim, ...){
     return words;
 }
 
+/** Check if the char s[] is a hidden file by checking if it starts with a
+ dot (.).  Return true if hidden.
+ */
 bool isHiddenFile(char s[])
 {
     return (s[0]=='.') ? true : false;
 }
 
+/**Open the specified file name with the specified mode.  If the file cannot be
+ open, the program will terminate.
+ */
 FILE * file_open(const char *filename, const char *mode)
 {
     FILE * fp;
@@ -282,6 +297,9 @@ FILE * file_open(const char *filename, const char *mode)
     return fp;
 }
 
+/**Return the file extension of the specified filename.  If the extension
+  is null,  return "default"
+ */
 char * getFileExtension(const char *filename)
 {
     char *p;
@@ -289,7 +307,8 @@ char * getFileExtension(const char *filename)
     return (p==NULL) ? "default": ++p;
 }
 
-
+/**Return in lowercase the string provided as argument to the function.
+ */
 void my_tolower(char *s)
 {
     for(;*s;s++)
