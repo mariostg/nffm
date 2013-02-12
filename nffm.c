@@ -638,12 +638,19 @@ void refreshFileInfo(char currentDir[], char currentFile[])
     char *fmt_size;
     char *filepath;
     char privilege[9]={};
-    char filetype[20]={};
+    char filetype[50]={};
+    int ft=-1;  //filetype index
+    char *symlinkdest;
     filepath = join(currentDir, currentFile);
     fileinfo = fileStat(filepath);
     toStringPerms(fileinfo.st_mode, privilege);    
-    toStringFileType(fileinfo.st_mode, filetype);
-    
+    ft=toStringFileType(fileinfo.st_mode, filetype);
+    if(ft==4){
+        symlinkdest = symlink_realpath(filepath);
+        strcat(strcat(filetype,"->"), symlinkdest);
+        free(symlinkdest);
+    }
+
     fmt_size=delimLong((long)fileinfo.st_size);
     mvwprintw(winfileinfo,0,0,"%-*s", MENUW, currentFile);
     mvwprintw(winfileinfo,1,0,"%18s Bytes",fmt_size);
@@ -664,7 +671,7 @@ void refreshFileInfo(char currentDir[], char currentFile[])
     t=NULL;
     
     mvwprintw(winfileinfo, 2, 25, "Privileges %s", privilege);
-    mvwprintw(winfileinfo, 3, 25, "File Type  %s", filetype);
+    mvwprintw(winfileinfo, 3, 25, "File Type  %-*s", 50, filetype);
 
     free(fmt_size);
     fmt_size=NULL;
@@ -1138,7 +1145,23 @@ int toStringFileType(mode_t perm, char *ft){
         default     :  type=7; break;
     }
     strcpy(ft, types[type]);
-    return 0;
+    return type;
+}
+
+char *symlink_realpath(const char *filename)
+{
+    size_t buf_size = 128;
+    char *buffer = malloc(buf_size);
+    ssize_t link_length=readlink(filename, buffer, buf_size);
+    if(link_length<0);
+
+    if((size_t) link_length<buf_size)
+    {
+        buffer[link_length]=0;
+        return buffer;
+    }
+
+    free(buffer);
 }
 
 int main(void)
@@ -1180,7 +1203,7 @@ int main(void)
     getmaxyx(stdscr, maxheight, maxwidth);
  
     windirinfo=newwin(5, MENUW, MENUHT+2, 0);
-    winfileinfo=newwin(5, MENUW, MENUHT+2+3, 0);
+    winfileinfo=newwin(5, MENUW + 45, MENUHT+2+3, 0);
     winheader=newwin(1,maxwidth,0,0);
     winfooter=newwin(1,maxwidth,maxheight-1,0);
     winscrollable=newwin(MENUHT, WINFILEW, 1,MENUW+1);

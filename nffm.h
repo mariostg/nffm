@@ -176,5 +176,6 @@ void refreshFileInfo(char currentDir[], char currentFile[]);
 void showkeys();
 int toStringFileType(mode_t perm, char *ft);
 int toStringPerms(mode_t perm, char sp[]);
+char *symlink_realpath(const char *filename);
 
 #endif /* NFFM_H */
